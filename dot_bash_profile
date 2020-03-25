@@ -1,6 +1,9 @@
 #
 # ~/.bash_profile
-#
 # Legacy configs from arch-linux installation
+#[[ -f ~/.bashrc ]] && . ~/.bashrc
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+PS1='[\u@\h \W]\$ '
+
