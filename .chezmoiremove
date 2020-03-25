@@ -1,0 +1,8 @@
+# Read by chezmoi when chosing repository files to copy to home directory.
+# This list defines globs to remove in the target destination dir, and supports Go's text/template language.
+# Execute with command:
+# chezmoi apply --remove --verbose
+
+# Default bash rc config files
+.bashrc
+.bash_logout
