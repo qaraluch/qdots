@@ -1,0 +1,5 @@
+# Profil file runs on zsh shell login. 
+# Environmental variables are set here.
+
+# XDG cofiguration for zsh
+ZDOTDIR=$HOME/.config/zsh
