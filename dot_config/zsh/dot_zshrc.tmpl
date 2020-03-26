@@ -5,11 +5,16 @@ export QDOTS_USER_PROMPT={{ .qdotsprompt }}
 export QDOTS_ZSH_CONF_DIR="$HOME/.config/zsh"
 export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
 export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
+export QDOTS_FUNCTIONS_DIR="$HOME/.config/functions"
 
 # History
 HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
 SAVEHIST=1000
 HISTSIZE=10000
+
+# Source functions
+for file ($QDOTS_FUNCTIONS_DIR/*.sh) source $file
+  #TODO: change in the future /*.{sh,zsh})
 
 # Completion
 zstyle :compinstall filename "$QDOTS_ZSH_CONF_DIR/.zshrc" # The following lines were added by compinstall
