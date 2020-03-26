@@ -1,0 +1,25 @@
+# Qdots settings
+export QDOTS_USER_PROMPT={{ .qdotsprompt }}
+
+# Qdots vars
+export QDOTS_ZSH_CONF_DIR="$HOME/.config/zsh"
+export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
+export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
+
+# History
+HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
+SAVEHIST=1000
+HISTSIZE=10000
+
+# Completion
+zstyle :compinstall filename "$QDOTS_ZSH_CONF_DIR/.zshrc" # The following lines were added by compinstall
+autoload -Uz compinit
+compinit -d "$QDOTS_ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
+
+# Prompt
+[ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt"
+
+# Lines configured by zsh-newuser-install
+setopt autocd extendedglob
+bindkey -v
+# End of lines configured by zsh-newuser-install

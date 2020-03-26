@@ -1,6 +1,8 @@
 {{- $email := promptString "Enter email address:" -}}
 {{- $gituser := promptString "Enter git user name:" -}}
+{{- $qdotsprompt := promptString "Choose qdots prompt type [wsl, simple]:" -}}
 [data]
 	email = "{{ $email }}"
 	gituser = "{{ $gituser }}"
+	qdotsprompt = "{{ $qdotsprompt }}"
 

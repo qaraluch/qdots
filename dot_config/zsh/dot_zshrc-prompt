@@ -1,0 +1,14 @@
+# Set prompt substitution
+setopt PROMPT_SUBST
+
+# Prompts user choose from
+PROMPT_WSL='%(1j.[%j].)[ %(!.%{%F{red}%}%n%{%f%}.%{%F{010}%}%}%n%{%f%})@%m ] %{%F{cyan}%}%~%{%f%} %{%F{010}%}$(git-get-current-branch)%{%f%} %(?.%{%F{green}%}λ %{%f%}.%{%F{red}%}λ %{%f%})'
+PROMPT_SIMPLE="%n@%m:%~%# "
+
+if [[ "$QDOTS_USER_PROMPT" == "wsl" ]] ; then
+  PROMPT=$PROMPT_WSL
+elif [[ "$QDOTS_USER_PROMPT" == "simple" ]] ; then
+  PROMPT=$PROMPT_SIMPLE
+else
+  PROMPT=$PROMPT_SIMPLE
+fi
