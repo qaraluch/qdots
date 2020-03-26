@@ -1,0 +1,16 @@
+# Alphabetical order
+
+# Git
+# see: .config/functions/git-functions.sh
+alias g='git-g-alias'
+alias ga='git-add-status'
+alias gd='git-diff'
+alias gidiot='git-idiot'
+alias gc="git-commit-better"
+alias gl='git-log 10'
+alias gld='git-log-date 10'
+alias glt='git-log-tree'
+alias gpush='git-push'
+alias grebase='git-rebase'
+
+alias v='nvim'

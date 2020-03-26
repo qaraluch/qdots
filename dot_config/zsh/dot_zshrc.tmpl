@@ -2,10 +2,11 @@
 export QDOTS_USER_PROMPT={{ .qdotsprompt }}
 
 # Qdots vars
-export QDOTS_ZSH_CONF_DIR="$HOME/.config/zsh"
+export QDOTS_CONF_DIR="$HOME/.config"
+export QDOTS_ZSH_CONF_DIR="$QDOTS_CONF_DIR/zsh"
 export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
 export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
-export QDOTS_FUNCTIONS_DIR="$HOME/.config/functions"
+export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
 # History
 HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
@@ -28,3 +29,6 @@ compinit -d "$QDOTS_ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
 setopt autocd extendedglob
 bindkey -v
 # End of lines configured by zsh-newuser-install
+
+# Source aliases
+[ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"
