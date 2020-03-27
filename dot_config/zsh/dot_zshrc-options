@@ -1,9 +1,3 @@
-# Dirs options (alias d)
-setopt auto_pushd
-setopt pushd_ignore_dups
-setopt pushd_minus
-setopt auto_cd
-
 # Completion
 zstyle :compinstall filename "$QDOTS_ZSH_CONF_DIR/.zshrc" # The following lines were added by compinstall
 autoload -Uz compinit
@@ -14,3 +8,22 @@ setopt autocd extendedglob
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
+# History
+HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
+HISTSIZE=10000
+SAVEHIST=$HISTSIZE
+
+setopt hist_find_no_dups	    # when searching history, show no duplicates
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_all_dups   # remove older duplicate entries from history
+setopt hist_save_no_dups      # means that whatever options are set for the current session, the shell is not to save duplicated lines more than once
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt hist_reduce_blanks     # tide up command from extra blank chars
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+
+# Dirs options (alias d)
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_minus
+setopt auto_cd
