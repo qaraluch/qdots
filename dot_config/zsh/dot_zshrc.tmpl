@@ -8,27 +8,15 @@ export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
 export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
 export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
-# History
-HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
-SAVEHIST=1000
-HISTSIZE=10000
-
-# Source functions
+# Source qdots functions
 for file ($QDOTS_FUNCTIONS_DIR/*.sh) source $file
   #TODO: change in the future /*.{sh,zsh})
-
-# Completion
-zstyle :compinstall filename "$QDOTS_ZSH_CONF_DIR/.zshrc" # The following lines were added by compinstall
-autoload -Uz compinit
-compinit -d "$QDOTS_ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
 
 # Prompt
 [ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt"
 
-# Lines configured by zsh-newuser-install
-setopt autocd extendedglob
-bindkey -v
-# End of lines configured by zsh-newuser-install
+# Zshell options
+[ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-options" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-options"
 
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"

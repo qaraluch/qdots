@@ -1,0 +1,16 @@
+# Dirs options (alias d)
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_minus
+setopt auto_cd
+
+# Completion
+zstyle :compinstall filename "$QDOTS_ZSH_CONF_DIR/.zshrc" # The following lines were added by compinstall
+autoload -Uz compinit
+compinit -d "$QDOTS_ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
+
+# Lines configured by zsh-newuser-install
+setopt autocd extendedglob
+bindkey -v
+# End of lines configured by zsh-newuser-install
+

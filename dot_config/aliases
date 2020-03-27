@@ -1,6 +1,51 @@
-# Alphabetical order
+# Subaliases
+alias cd-grandparent='../..'
+alias cd-great-grandparent='../../..'
+alias ls-simple='ls -1FcrtA'          # 1 line, classify, ? , reverse, by time, almost all
+alias ls-long='ls -lAh'               # long, almost all, human
+alias ls-long-size='ls -lahS'         # long, all, human, by size
+alias ls-long-time='ls -laht'         # long, all, human, by time
+alias show-dirs='dirs -v | head -10'
 
-# Git
+# Improved common commands
+alias cp='cp -ivrf'
+alias ln='ln -iv'
+alias ls='ls --color=auto --group-directories-first'
+alias grep='grep --color=auto'
+alias mv='mv -iv'
+alias mvt='mv -ivt'                                     # move to the target
+alias rm='rm -Irf'
+
+# Aliases in alphabetical order
+
+# cd and navigate dirs
+alias -- -='cd -'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
+alias cd..='cd ..'
+alias cd...='cd-grandparent'
+alias cd....='cd-great-grandparent'
+alias d='show-dirs'
+
+alias tre='tree-better'                             /functions/better-commands.sh
+alias tre1='tree-better -L 1'
+alias tre2='tree-better -L 2'
+alias tre3='tree-better -L 3'
+alias tred='tree-better-dirs'
+alias tred1='tree-better-dirs -L 1'
+alias tred2='tree-better-dirs -L 2'
+alias tred3='tree-better-dirs -L 3'
+
+alias e='exit'
+
+# git
 # see: .config/functions/git-functions.sh
 alias g='git-g-alias'
 alias ga='git-add-status'
@@ -13,4 +58,18 @@ alias glt='git-log-tree'
 alias gpush='git-push'
 alias grebase='git-rebase'
 
+alias gh='ag-here'
+
+# ls
+alias ll='ls-long'
+alias l='ls-simple'
+alias lls='ls-long-size'
+alias llt='ls-long-time'
+
+alias take='mkdir-and-cd'
+
+# nvim
 alias v='nvim'
+alias vf='ag --follow --hidden --ignore .git --ignore .cache --ignore node_modules -g "" ./ | fzf | ifne xargs nvim'
+  # depends on ifne tool from moreutils
+  # depends on the_silver_searcher
