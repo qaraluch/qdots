@@ -18,5 +18,18 @@ for file ($QDOTS_FUNCTIONS_DIR/*.sh) source $file
 # Zshell options
 [ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-options" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-options"
 
+# Fzf configuration
+source /usr/share/fzf/completion.zsh
+source /usr/share/fzf/key-bindings.zsh
+
+export FZF_DEFAULT_OPTS='
+    --color fg:252,bg:233,hl:67,fg+:252,bg+:235,hl+:81
+    --color info:144,prompt:161,spinner:135,pointer:135,marker:118
+'
+
+export FZF_DEFAULT_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g ""'
+export FZF_CTRL_T_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g "" | sed -e "s:/[^/]*$::" | uniq'
+export FZF_ALT_C_OPTS="--preview ' tree -C {} | head -200'"
+
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"

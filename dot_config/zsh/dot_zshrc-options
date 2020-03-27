@@ -19,7 +19,12 @@ autoload -U edit-command-line
 zle -N edit-command-line
 
 # Keybindings
+# Other program's keybindings (for reference)
+# C-t - fzf - insert file/dir name to the command line
+# C-r - fzf - insert command from history to the command line
+# A-c - fzf - not working due to polish keyboard (see: below)
 bindkey '\C-x\C-e' edit-command-line              # ctrl-x ctrl-e - edit command in editor (in nvim)
+bindkey '\C-e'     fzf-cd-widget                  # re-binding fzf's default alt-c binding
 
 # History
 HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
