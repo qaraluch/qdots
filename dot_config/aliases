@@ -66,6 +66,8 @@ alias l='ls-simple'
 alias lls='ls-long-size'
 alias llt='ls-long-time'
 
+alias reload='zsh-reload'
+
 alias take='mkdir-and-cd'
 
 # nvim

@@ -1,4 +1,4 @@
-# Improve commands
+# Better commands
 # see aliases: .config/aliases
 
 # take alias

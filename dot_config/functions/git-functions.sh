@@ -1,6 +1,7 @@
-# Git functions
+# Functions for git
 # Use util functions
 # see: ~/.config/functions/util-functions.sh
+# see aliases: .config/aliases
 
 # Logs formats
 export GIT_LOG_MY_FORMAT='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc)%cd - %C(reset)%s%C(auto,cyan)% gD% D %C(reset)'
