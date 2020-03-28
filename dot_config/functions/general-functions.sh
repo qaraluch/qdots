@@ -2,17 +2,28 @@
 
 # Timestamps
 getTimeStamp() {
-  echo $(date +%s)
+  date +%s
 }
 
 getTimeStampHuman() {
-  echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d %H:%M:%S')
+  date -d @"$(_getTimeStamp)" +'%Y-%m-%d %H:%M:%S'
 }
 
 getTimeStampDate() {
-  echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d')
+  date -d @"$(_getTimeStamp)" +'%Y-%m-%d'
 }
 
 getTimeStampHumanFile() {
-  echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d_%H%M%S')
+  date -d @"$(_getTimeStamp)" +'%Y-%m-%d_%H%M%S'
+}
+
+isInstalledOnArch() {
+    local package
+    package="$1"
+    local check
+    check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+    if [ -n "${check}" ] ; then
+        return 0 #installed
+    fi;
+    return 1 # not installed
 }
