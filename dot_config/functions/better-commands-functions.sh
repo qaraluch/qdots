@@ -27,3 +27,20 @@ tree-better-dirs() {
     # -a show hidden dirs
 }
 
+rm-symlink() {
+  [ -L "$1" ] && cp --remove-destination "$(readlink "$1")" "$1"
+}
+
+# $PATH better commands
+path-print() {
+  echo -e ${PATH//:/\\n}
+}
+
+path-executables-paths-print() {
+  print -rl -- $commands
+}
+
+path-executables-print() {
+  print -rl -- ${(ko)commands}
+}
+
