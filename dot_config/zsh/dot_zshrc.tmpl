@@ -6,6 +6,7 @@ export QDOTS_CONF_DIR="$HOME/.config"
 export QDOTS_ZSH_CONF_DIR="$QDOTS_CONF_DIR/zsh"
 export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
 export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
+export QDOTS_ZSH_CACHE_PLUGS_DIR="$HOME/.cache/zsh/plugs"
 export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
 # Source qdots functions
@@ -30,6 +31,10 @@ export FZF_DEFAULT_OPTS='
 export FZF_DEFAULT_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g ""'
 export FZF_CTRL_T_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g "" | sed -e "s:/[^/]*$::" | uniq'
 export FZF_ALT_C_OPTS="--preview ' tree -C {} | head -200'"
+
+# Plugin fzf-marks
+# See: run_once_zsh_setup.sh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
 
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"
