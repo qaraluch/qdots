@@ -16,6 +16,17 @@ alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
 alias rm='rm -Irf'
 
+# Zsh-abbrev-alias'es
+# cavets: need space before (hard to use as a part of filename)
+abbrev-alias -g DN='> /dev/null 2>&1'
+abbrev-alias -g L="| less"
+abbrev-alias -g T="| tail"
+abbrev-alias -g FF="find . -type f"
+abbrev-alias -g FD="find . -type d"
+abbrev-alias -ge DD="$(getTimeStampDate)"
+abbrev-alias -ge DDF="$(getTimeStampHumanFile)"
+abbrev-alias -ge DDL="$(getTimeStamp)"
+
 # Aliases in alphabetical order
 
 # cd and navigate dirs

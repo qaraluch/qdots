@@ -36,5 +36,9 @@ export FZF_ALT_C_OPTS="--preview ' tree -C {} | head -200'"
 # See: run_once_zsh_setup.sh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
 
+# Plugin zsh-abbrev-alias
+# See: run_once_zsh_setup.sh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias/abbrev-alias.plugin.zsh
+
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"

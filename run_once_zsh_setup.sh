@@ -23,7 +23,7 @@ readonly zshdir="$HOME/.local/share/zsh"
 mkdir -p "${zshcachedir}"
 mkdir -p "${zshdir}"
 
-# 1. Zsh plugin installation: FZF-MARKS
+# 2. Zsh plugin installation: FZF-MARKS
 # Home URL: [urbainvaes/fzf-marks: Plugin to manage bookmarks in bash and zsh](https://github.com/urbainvaes/fzf-marks)
 # sourcing in .config/zsh/.zshrc
 readonly fzfmarks_plugName='fzf-marks'
@@ -39,3 +39,20 @@ plug-install-fzf-marks() {
     fi
 }
 plug-install-fzf-marks
+
+# 3. Zsh plugin installation: ZSH-ABBREV-ALIAS
+# Home URL: [momo-lab/zsh-abbrev-alias: This zsh plugin provides functionality similar to Vim's abbreviation expansion.](https://github.com/momo-lab/zsh-abbrev-alias)
+# sourcing in .config/zsh/.zshrc
+readonly zshabbrevalia_plugName='zsh-abbrev-alias'
+readonly zshabbrevalia_plugGitURL='https://github.com/momo-lab/zsh-abbrev-alias.git'
+readonly zshabbrevalia_plugCacheDirPath="${zshcachedir}/plugs/${zshabbrevalia_plugName}"
+readonly zshabbrevalia_plugCommandDownload=( git clone --depth 1 "${zshabbrevalia_plugGitURL}" "${zshabbrevalia_plugCacheDirPath}" )
+plug-install-zsh-abbrev-alias() {
+    if [[ ! -d $zshabbrevalia_plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${zshabbrevalia_plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${zshabbrevalia_plugCommandDownload[@]}")
+        _echoDone
+    fi
+}
+plug-install-zsh-abbrev-alias

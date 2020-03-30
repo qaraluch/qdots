@@ -6,15 +6,15 @@ getTimeStamp() {
 }
 
 getTimeStampHuman() {
-  date -d @"$(_getTimeStamp)" +'%Y-%m-%d %H:%M:%S'
+  date -d @"$(getTimeStamp)" +'%Y-%m-%d %H:%M:%S'
 }
 
 getTimeStampDate() {
-  date -d @"$(_getTimeStamp)" +'%Y-%m-%d'
+  date -d @"$(getTimeStamp)" +'%Y-%m-%d'
 }
 
 getTimeStampHumanFile() {
-  date -d @"$(_getTimeStamp)" +'%Y-%m-%d_%H%M%S'
+  date -d @"$(getTimeStamp)" +'%Y-%m-%d_%H%M%S'
 }
 
 isInstalledOnArch() {
