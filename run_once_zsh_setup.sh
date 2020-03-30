@@ -73,7 +73,7 @@ plug-install-zsh-autosuggestions() {
 }
 plug-install-zsh-autosuggestions
 
-# 5. Zsh plugin installation: ZSH SYNTAX HIGHLIGHTING
+# 5. Zsh plugin installation: ZSH-SYNTAX-HIGHLIGHTING
 # Home URL: [zsh-users/zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh.](https://github.com/zsh-users/zsh-syntax-highlighting)
 readonly zshsyntaxhl_plugName='zsh-syntax-highlighting'
 readonly zshsyntaxhl_plugGitURL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
@@ -89,3 +89,18 @@ plug-install-zsh-syntax-highlighting() {
 }
 plug-install-zsh-syntax-highlighting
 
+# 6. Zsh plugin installation: ZSH-VIMTO
+# Home URL: [laurenkt/zsh-vimto: Improved zsh vim mode (bindkey -v) plugin](https://github.com/laurenkt/zsh-vimto)
+readonly zshvimto_plugName='zsh-vimto'
+readonly zshvimto_plugGitURL='https://github.com/laurenkt/zsh-vimto.git'
+readonly zshvimto_plugCacheDirPath="${zshcachedir}/plugs/${zshvimto_plugName}"
+readonly zshvimto_plugCommandDownload=( git clone --depth 1 "${zshvimto_plugGitURL}" "${zshvimto_plugCacheDirPath}" )
+plug-install-zsh-vimto() {
+    if [[ ! -d $zshvimto_plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${zshvimto_plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${zshvimto_plugCommandDownload[@]}")
+        _echoDone
+    fi
+}
+plug-install-zsh-vimto

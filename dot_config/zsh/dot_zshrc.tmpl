@@ -1,3 +1,6 @@
+# Zshrc config file.
+# Do not chang the order of execution!
+
 # Qdots settings
 export QDOTS_USER_PROMPT={{ .qdotsprompt }}
 
@@ -16,8 +19,13 @@ for file ($QDOTS_FUNCTIONS_DIR/*.sh) source $file
 # Prompt
 [ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt"
 
-# Zshell options
-[ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-options" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-options"
+# Plugins
+# See: run_once_zsh_setup.sh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-vimto ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-vimto/zsh-vimto.zsh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias/abbrev-alias.plugin.zsh
 
 # Fzf configuration
 source /usr/share/fzf/completion.zsh
@@ -50,12 +58,11 @@ ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
 ZSH_HIGHLIGHT_STYLES[comment]='fg=225'                    # light purplish
 ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='fg=yellow'
 
-# Plugins first time installation
-# See: run_once_zsh_setup.sh
-[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
-[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias/abbrev-alias.plugin.zsh
-[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh
-[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Zsh-vimto configuration
+export KEYTIMEOUT=20
+
+# Zshell options
+[ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-options" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-options"
 
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"

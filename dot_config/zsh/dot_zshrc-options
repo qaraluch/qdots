@@ -1,5 +1,5 @@
 # General
-bindkey -v                             # vim bindings
+# bindkey -v                           # vim bindings - no need - zsh-vimto handles it!
 setopt extendedglob                    # globling see zsh.md
 setopt autocd                          # auto cd when run path
 setopt no_beep                         # no beep on error
@@ -25,6 +25,7 @@ zle -N edit-command-line
 # A-c - fzf - not working due to polish keyboard (see: below)
 # C-g - fzf-marks - open marks menu
 # space - zsh-abbrev-alias - expand abbreviation
+bindkey -M viins '\\j' vi-cmd-mode                     # zsh-vimto - insert mode
 bindkey '^n' forward-word                             # ctrl-n - alternative move forward one word
                                                       # ctrl-w - move back one world (default zhs)
 bindkey '^ '       autosuggest-accept                 # plugin: zhs-autosuggestions (alternative: right arrow)
