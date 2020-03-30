@@ -32,14 +32,30 @@ export FZF_DEFAULT_COMMAND='ag --follow --hidden --ignore .git --ignore node_mod
 export FZF_CTRL_T_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g "" | sed -e "s:/[^/]*$::" | uniq'
 export FZF_ALT_C_OPTS="--preview ' tree -C {} | head -200'"
 
-# zsh-autosuggestions configuration
+# Zsh-autosuggestions configuration
 export ZSH_AUTOSUGGEST_USE_ASYNC='y'    # async suggestions
+
+# Zsh-syntax-highlighting configuration
+export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+typeset -xA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=007'              # white
+ZSH_HIGHLIGHT_STYLES[alias]='fg=191'                      # greenish
+ZSH_HIGHLIGHT_STYLES[arg0]='fg=191'
+ZSH_HIGHLIGHT_STYLES[command]='fg=191'
+ZSH_HIGHLIGHT_STYLES[function]='fg=191'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=230'       # orangish
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=230'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=225'                    # light purplish
+ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='fg=yellow'
 
 # Plugins first time installation
 # See: run_once_zsh_setup.sh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias/abbrev-alias.plugin.zsh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"

@@ -73,3 +73,19 @@ plug-install-zsh-autosuggestions() {
 }
 plug-install-zsh-autosuggestions
 
+# 5. Zsh plugin installation: ZSH SYNTAX HIGHLIGHTING
+# Home URL: [zsh-users/zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh.](https://github.com/zsh-users/zsh-syntax-highlighting)
+readonly zshsyntaxhl_plugName='zsh-syntax-highlighting'
+readonly zshsyntaxhl_plugGitURL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
+readonly zshsyntaxhl_plugCacheDirPath="${zshcachedir}/plugs/${zshsyntaxhl_plugName}"
+readonly zshsyntaxhl_plugCommandDownload=( git clone --depth 1 "${zshsyntaxhl_plugGitURL}" "${zshsyntaxhl_plugCacheDirPath}" )
+plug-install-zsh-syntax-highlighting() {
+    if [[ ! -d $zshsyntaxhl_plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${zshsyntaxhl_plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${zshsyntaxhl_plugCommandDownload[@]}")
+        _echoDone
+    fi
+}
+plug-install-zsh-syntax-highlighting
+
