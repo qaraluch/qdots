@@ -25,8 +25,11 @@ zle -N edit-command-line
 # A-c - fzf - not working due to polish keyboard (see: below)
 # C-g - fzf-marks - open marks menu
 # space - zsh-abbrev-alias - expand abbreviation
-bindkey '\C-x\C-e' edit-command-line              # ctrl-x ctrl-e - edit command in editor (in nvim)
-bindkey '\C-e'     fzf-cd-widget                  # re-binding fzf's default alt-c binding
+bindkey '^n' forward-word                             # ctrl-n - alternative move forward one word
+                                                      # ctrl-w - move back one world (default zhs)
+bindkey '^ '       autosuggest-accept                 # plugin: zhs-autosuggestions (alternative: right arrow)
+bindkey '\C-x\C-e' edit-command-line                  # ctrl-x ctrl-e - edit command in editor (in nvim)
+bindkey '\C-e'     fzf-cd-widget                      # re-binding fzf's default alt-c binding
 
 # History
 HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"

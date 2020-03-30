@@ -1,4 +1,6 @@
 #!/bin/bash
+# Setup ZSH shell
+# sourcing in .config/zsh/.zshrc
 
 # utils
 readonly _QDel='[ qdots ]'
@@ -25,7 +27,6 @@ mkdir -p "${zshdir}"
 
 # 2. Zsh plugin installation: FZF-MARKS
 # Home URL: [urbainvaes/fzf-marks: Plugin to manage bookmarks in bash and zsh](https://github.com/urbainvaes/fzf-marks)
-# sourcing in .config/zsh/.zshrc
 readonly fzfmarks_plugName='fzf-marks'
 readonly fzfmarks_plugGitURL='https://github.com/urbainvaes/fzf-marks.git'
 readonly fzfmarks_plugCacheDirPath="${zshcachedir}/plugs/${fzfmarks_plugName}"
@@ -42,7 +43,6 @@ plug-install-fzf-marks
 
 # 3. Zsh plugin installation: ZSH-ABBREV-ALIAS
 # Home URL: [momo-lab/zsh-abbrev-alias: This zsh plugin provides functionality similar to Vim's abbreviation expansion.](https://github.com/momo-lab/zsh-abbrev-alias)
-# sourcing in .config/zsh/.zshrc
 readonly zshabbrevalia_plugName='zsh-abbrev-alias'
 readonly zshabbrevalia_plugGitURL='https://github.com/momo-lab/zsh-abbrev-alias.git'
 readonly zshabbrevalia_plugCacheDirPath="${zshcachedir}/plugs/${zshabbrevalia_plugName}"
@@ -56,3 +56,20 @@ plug-install-zsh-abbrev-alias() {
     fi
 }
 plug-install-zsh-abbrev-alias
+
+# 4. Zsh plugin installation: ZSH-AUTOSUGGESTIONS
+# Home URL: [zsh-users/zsh-autosuggestions: Fish-like autosuggestions for zsh](https://github.com/zsh-users/zsh-autosuggestions)
+readonly zshautosuggestions_plugName='zsh-autosuggestions'
+readonly zshautosuggestions_plugGitURL='https://github.com/zsh-users/zsh-autosuggestions.git'
+readonly zshautosuggestions_plugCacheDirPath="${zshcachedir}/plugs/${zshautosuggestions_plugName}"
+readonly zshautosuggestions_plugCommandDownload=( git clone --depth 1 "${zshautosuggestions_plugGitURL}" "${zshautosuggestions_plugCacheDirPath}" )
+plug-install-zsh-autosuggestions() {
+    if [[ ! -d $zshautosuggestions_plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${zshautosuggestions_plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${zshautosuggestions_plugCommandDownload[@]}")
+        _echoDone
+    fi
+}
+plug-install-zsh-autosuggestions
+
