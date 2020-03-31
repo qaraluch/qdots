@@ -13,6 +13,11 @@ export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
 export QDOTS_ZSH_CACHE_PLUGS_DIR="$HOME/.cache/zsh/plugs"
 export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
+# Tmux autostart
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
+
 # Source qdots functions
 for file ($QDOTS_FUNCTIONS_DIR/*.{sh,zsh}) source $file
 
