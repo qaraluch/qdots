@@ -101,3 +101,15 @@ zle-fzf-git-get-status-item() {
 }
 zle -N status zle-fzf-git-get-status-item
 
+# For locate command
+fzf-choose-locate-item() {
+  echo "$( locate-get-data | \
+    fzf --height 40% --layout=reverse --border -m
+  )"
+}
+zle-fzf-locate-item() {
+  _zle-init-widget
+  fzf-choose-locate-item | \
+  _zle-insert
+}
+zle -N zle-fzf-locate-item

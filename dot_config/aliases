@@ -77,6 +77,12 @@ alias l='ls-simple'
 alias lls='ls-long-size'
 alias llt='ls-long-time'
 
+# locate
+# see: .config/functions/better-commands-functions.sh
+# alias lo='fzf-choose-locate-item' # no use for now
+alias lou='locate-update-db'
+alias lor='locate-remove-db'
+
 alias reload='zsh-reload'
 
 alias take='mkdir-and-cd'

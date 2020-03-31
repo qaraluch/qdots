@@ -44,3 +44,20 @@ path-executables-print() {
   print -rl -- ${(ko)commands}
 }
 
+# Locate
+# database creation, update and remove commands
+locate-update-db() {
+  _echoIt "$_QDel" "About to ${_cy}update${_ce} locate database..."
+  sudo updatedb
+  _echoDone
+}
+
+locate-get-data() {
+  echo "$(locate /)"
+}
+
+locate-remove-db() {
+  _echoIt "$_QDel" "About to ${_cy}remove${_ce} locate database..."
+  sudo rm /var/lib/mlocate/mlocate.db
+  _echoDone
+}
