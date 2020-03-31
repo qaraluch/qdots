@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Display current weather forecast in the terminal.
+# Author: qaraluch - 01.2019 - MIT
+
+readonly _pArgs="$@"
+readonly _pDel="[ pogoda ]"
+readonly _pName=$(basename $0)
+
+# Settings:
+readonly cityDefault='Gliwice'
+readonly apiUrl='http://wttr.in/'
+
+printUsage() {
+  cat <<EOL
+
+  Help:
+  ---------
+  ${_cy}${_pName}${_ce} - Display current weather forecast in shell.
+
+  Usage:
+    ${_pName} <location>    - pass different location
+
+EOL
+  exit ${1:-1}
+}
+
+# Utils:
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+
+echoIt() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+
+echoDone() {
+  echoIt "$_pDel" "DONE!" "$_it"
+  echo >&2
+}
+
+# CLI
+parseOptions(){
+  while [[ $# -gt 0 ]] ; do
+    flag="$1"
+    case $flag in
+      -h|--help)
+      printUsage
+      ;;
+      *)
+      positional+=("$1")
+      shift
+      ;;
+    esac
+  done
+}
+
+main() {
+  local positional=()
+  parseOptions $_pArgs
+  set -- "${positional[@]}"
+  local city="$1"
+  if [ -z "$city" ]; then
+      city="${cityDefault}"
+  fi
+  echoIt "$_pDel" 'Wait...'
+  local results=$(curl -s "${apiUrl}${city}")
+  echo "$results"
+  echoDone
+}
+
+main
