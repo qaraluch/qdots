@@ -9,6 +9,10 @@ readonly packagesToInstall=(
   'moreutils'
 )
 
+readonly packagesToMake=(
+  'lukesmithxyz/dwm.git'
+)
+
 # utils
 readonly _QDel='[ qdots ]'
 readonly _Qcg=$'\033[1;32m'              # Green
@@ -21,6 +25,9 @@ __echoIt() {
 }
 __msgNotInstalled() {
   __echoIt "${_QDel}" "It seems that package: ${_Qcy}$1${_Qce} not installed! Intalling... " "${_Qiw}"
+}
+__msgMakePackage() {
+  __echoIt "${_QDel}" "About to clone, make and make install package: ${_Qcy}$1${_Qce} ... " "${_Qiw}"
 }
 __msgInstalled() {
   __echoIt "${_QDel}" "Package: ${_Qcy}$1${_Qce} already installed! Nothing to do." "${_Qiw}"
@@ -51,7 +58,23 @@ installPackage() {
   fi
 }
 
+makePackage() {
+  local package
+  package=${1}
+  local dir
+  __msgMakePackage "${package}"
+  dir=$(mktemp -d)
+	git clone --depth 1 "https://github.com/${package}" "$dir"
+	cd "$dir"
+	sudo make
+	sudo make install
+}
+
 for pkg in "${packagesToInstall[@]}" ; do
   installPackage $pkg
+done
+
+for pkg in "${packagesToMake[@]}" ; do
+  makePackage $pkg
 done
 

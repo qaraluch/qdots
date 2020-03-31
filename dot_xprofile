@@ -6,5 +6,5 @@ xset r rate 300 50 &	                # speed xrate up
 setxkbmap -layout pl                  # Polish keyboard layout
 xcompmgr &		                        # for transparency
 xrdb $HOME/.config/Xresources &	      # Xresources for colors/settings
-unclutter &		                        # remove mouse when idle
+# unclutter &		                        # remove mouse when idle
 
