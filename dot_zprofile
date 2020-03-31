@@ -14,3 +14,6 @@ export ZDOTDIR=$HOME/.config/zsh
 # - login-wide scope
 # - removes inconvenient trailing colon
 [[ ":$PATH:" != *":${HOME}/bin"* ]] && export PATH="$PATH:$(du -L "$HOME/bin" | cut -f2 | tr '\n' ':' | rev | cut -c 2- | rev)"
+
+# Xorg start
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && exec startx

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Xorg init
+# xinitrc runs automatically when you run startx.
+
+# Some commands are in ~/.xprofile
+# that file is run automatically by some other apps.
+[ -f $HOME/.xprofile ] && source $HOME/.xprofile
+
+# Run windows manager of choice
+exec dwm
