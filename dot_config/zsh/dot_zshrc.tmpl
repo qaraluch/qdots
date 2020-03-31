@@ -13,8 +13,7 @@ export QDOTS_ZSH_CACHE_PLUGS_DIR="$HOME/.cache/zsh/plugs"
 export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
 # Source qdots functions
-for file ($QDOTS_FUNCTIONS_DIR/*.sh) source $file
-  #TODO: change in the future /*.{sh,zsh})
+for file ($QDOTS_FUNCTIONS_DIR/*.{sh,zsh}) source $file
 
 # Prompt
 [ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-prompt"

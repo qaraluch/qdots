@@ -26,11 +26,12 @@ zle -N edit-command-line
 # C-g - fzf-marks - open marks menu
 # space - zsh-abbrev-alias - expand abbreviation
 bindkey -M viins '\\j' vi-cmd-mode                     # zsh-vimto - insert mode
-bindkey '^n' forward-word                             # ctrl-n - alternative move forward one word
-                                                      # ctrl-w - move back one world (default zhs)
-bindkey '^ '       autosuggest-accept                 # plugin: zhs-autosuggestions (alternative: right arrow)
-bindkey '\C-x\C-e' edit-command-line                  # ctrl-x ctrl-e - edit command in editor (in nvim)
-bindkey '\C-e'     fzf-cd-widget                      # re-binding fzf's default alt-c binding
+bindkey '\C-e'     fzf-cd-widget                       # re-binding fzf's default alt-c binding
+bindkey '^n' forward-word                              # ctrl-n - alternative move forward one word
+                                                       # ctrl-w - move back one world (default zhs)
+bindkey '^ '       autosuggest-accept                  # plugin: zhs-autosuggestions (alternative: right arrow)
+bindkey '\C-x\C-e' edit-command-line                   # ctrl-x ctrl-e - edit command in editor (in nvim)
+bindkey '\C-x\C-l' zle-insert-last-typed-word          # ctrl-x ctrl-l - insert last typed word, see: .config/functions/zle-functions.zsh
 
 # History
 HISTFILE="$QDOTS_ZSH_HISTORY_DIR/history"
