@@ -2,9 +2,10 @@
 # Environmental variables are set here.
 
 # Default programs
-export VISUAL="nvim"
+export VISUAL='nvim'
 export EDITOR="$VISUAL"
 export PAGER=less
+export BROWSER='brave'
 
 # XDG cofiguration for zsh
 export ZDOTDIR=$HOME/.config/zsh

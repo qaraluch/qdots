@@ -2,11 +2,18 @@
 
 # qdots - programs needed for this dotfiles
 
+readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
+
 readonly packagesToInstall=(
   'fzf'
   'the_silver_searcher'
   'shellcheck'
   'moreutils'
+)
+
+readonly packagesToInstallAUR=(
+  'brave-bin'                           # browser of choice.
+                                        # see: $BROWSER in ~/.zprofile
 )
 
 readonly packagesToMake=(
@@ -58,6 +65,19 @@ installPackage() {
   fi
 }
 
+installPackageAUR() { \
+  local package
+  package=${1}
+  local isPackageInstalled
+  isPackageInstalled=$(__isInstalledOnArch "${package}")
+  if ${isPackageInstalled} ; then
+    __msgInstalled "${package}"
+  else
+    __msgNotInstalled "${package}"
+    sudo ${AUR_HELPER} -S --noconfirm ${package}
+  fi
+}
+
 makePackage() {
   local package
   package=${1}
@@ -72,6 +92,10 @@ makePackage() {
 
 for pkg in "${packagesToInstall[@]}" ; do
   installPackage $pkg
+done
+
+for pkg in "${packagesToInstallAUR[@]}" ; do
+  installPackageAUR $pkg
 done
 
 for pkg in "${packagesToMake[@]}" ; do
