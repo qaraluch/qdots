@@ -5,19 +5,46 @@
 readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
 
 readonly packagesToInstall=(
-  'fzf'
-  'the_silver_searcher'
-  'shellcheck'
-  'moreutils'
+  'fzf'                                 # [tool] command-line fuzzy finder
+                                        #        need for: zsh, nvim, locate, qdots
+  'the_silver_searcher'                 # [tool] alternative to grep
+                                        #        need for: nvim, fzf, qdots
+  'shellcheck'                          # [dev tool] shell script analysis tool
+                                        #            need for shell scripts development
+  'moreutils'                           # [util] shell scripting utility: ifne
+                                        #        need for: fzf, nvim alias (qdots)
+  'xorg-server'                         # [X11] display server for the X window
+  'xorg-xinit'                          # [X11] program allows a user to manually
+                                        #       start an Xorg display server.
+  'xorg-xdpyinfo'                       # [X11] retrieves screen information for some scripts
+  'xorg-xwininfo'                       # [X11] allows querying information about windows
+  'xcompmgr'                            # [X11] utility for transparency and
+                                        #       removing screen-tearing.
+  'xclip'                               # [X11] command line interface to the X11 clipboard.
+  'sxhkd'                               # [X11] simple X hotkey daemon.
+  'libx11'                              # [X11] dependency for st compilation.
+  'libxft'                              # [X11] dependency for st compilation.
+  'ffmpeg'                              # [tool] software suite of libraries and programs
+                                        #        for handling video audio and
+                                        #        other multimedia files and streams
+  'ttf-dejavu'                          # [rice] font
+  'ttf-liberation'                      # [rice] font
+  'screenfetch'                         # [rice] bash script that displays system
+                                        #        information alongside the
+                                        #        ASCII distribution logo
+  # not in use:
+  # 'chomium'                             # [browser] alternative
+  # 'firefox'                             # [browser] alternative
 )
 
 readonly packagesToInstallAUR=(
-  'brave-bin'                           # browser of choice.
-                                        # see: $BROWSER in ~/.zprofile
+  'brave-bin'                           # [browser] of choice.
+                                        #           see: $BROWSER in ~/.zprofile
 )
 
 readonly packagesToMake=(
-  'lukesmithxyz/dwm.git'
+  'lukesmithxyz/dwm.git'                # [X11] Luke's build of dwm (windows manager)
+  'LukeSmithxyz/st.git'                 # [X11] Luke's build of st (simple terminal)
 )
 
 # utils
