@@ -24,16 +24,17 @@ __msgInstalled() {
   __echoIt "${_QDel}" "Package: ${_Qcy}$1${_Qce} already installed! Nothing to do." "${_Qiw}"
 }
 __isInstalledOnArch() {
-    # duplicate with fn in general-functions.sh file
-    # have to be a standalone script - can not depend on other helpers
-    local package
-    package="$1"
-    local check
-    check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
-    if [ -n "${check}" ] ; then
-        return 0 #installed
-    fi;
-    return 1 # not installed
+  # duplicate with fn in general-functions.sh file
+  # have to be a standalone script - can not depend on other helpers
+  local package
+  package="$1"
+  local check
+  check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+  if [ -n "${check}" ] ; then
+    echo 'true'
+  else
+    echo 'false'
+  fi;
 }
 
 installPackage() {
@@ -41,7 +42,7 @@ installPackage() {
   package=${1}
   local isPackageInstalled
   isPackageInstalled=$(__isInstalledOnArch "${package}")
-  if ${isPackageInstalled} ; then
+  if [ ${isPackageInstalled} = 'true' ] ; then
     __msgInstalled "${package}"
   else
     __msgNotInstalled "${package}"
