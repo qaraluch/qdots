@@ -16,7 +16,7 @@
 
 <br />
 
-- Easy in manage, thanks to [chezmoi.io](https://www.chezmoi.io/).
+- Easy to manage, thanks to [chezmoi.io](https://www.chezmoi.io/).
 - Version control via **GIT**.
 - Based on **ZSH** shell.
 - Zsh **completions**.
