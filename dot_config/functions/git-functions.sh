@@ -29,6 +29,7 @@ git-push() { git push $* && git-status-log ; }
 git-rebase() { git rebase -i "HEAD~$1" ; }
 git-status() { git status -s ; }
 git-status-log() { git-status ; _echoIt ; git-log 10 ; }
+git-clone() { git clone "https://github.com/$*" ; }
 
 # Util functions
 git-get-current-branch() {
