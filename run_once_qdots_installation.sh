@@ -21,7 +21,6 @@ readonly packagesToInstall=(
   'xcompmgr'                            # [X11] utility for transparency and
                                         #       removing screen-tearing.
   'xclip'                               # [X11] command line interface to the X11 clipboard.
-  'sxhkd'                               # [X11] simple X hotkey daemon.
   'libx11'                              # [X11] dependency for st compilation.
   'libxft'                              # [X11] dependency for st compilation.
   'ffmpeg'                              # [tool] software suite of libraries and programs
