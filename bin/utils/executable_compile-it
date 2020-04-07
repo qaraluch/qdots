@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# util script for compiling i.e.
+# make install from git repo
+# pass argument of github rego address like: lukesmithxyz/dwm.git
+# Author: qaraluch - 04.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  local msgDefaultAbort=${2:-'Abort script!'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    _errorExit "${msgDefaultAbort}"
+  fi
+}
+_msgMakePackage() {
+  _echoIt "About to clone, make and make install package: ${_cy}$1${_ce} ... "
+}
+
+
+makeInstallPackage() {
+  dir=$(mktemp -d)
+	git clone --depth 1 "https://github.com/${gitPackage}" "$dir"
+	cd "$dir"
+	sudo make
+	sudo make install
+}
+
+main() {
+  local gitPackage
+  gitPackage=${1}
+  local dir
+  _msgMakePackage "${gitPackage}"
+  _yesConfirmOrAbort
+  makeInstallPackage "${gitPackage}" \
+    && _echoDone
+}
+
+main "$1"

@@ -27,3 +27,14 @@ isInstalledOnArch() {
     fi;
     return 1 # not installed
 }
+
+isGlobalExecutable() {
+    local package
+    package="$1"
+    local check
+    check="$(command -v ${package})"
+    if [ -x "${check}" ] ; then
+        return 0 # it is
+    fi;
+    return 1 # it is not
+}

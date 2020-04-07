@@ -4,7 +4,8 @@
 
 readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
 
-readonly packagesToInstall=(
+# shell essentials installation
+readonly essentialsPackagesToInstall=(
   'fzf'                                 # [tool] command-line fuzzy finder
                                         #        need for: zsh, nvim, locate, qdots
   'the_silver_searcher'                 # [tool] alternative to grep
@@ -13,59 +14,64 @@ readonly packagesToInstall=(
                                         #            need for shell scripts development
   'moreutils'                           # [util] shell scripting utility: ifne
                                         #        need for: fzf, nvim alias (qdots)
+  # extras
+  'nodejs'                              # [dev] a bit of overkill but used
+                                        #       for prettier in nvim
+                                        #       also for javascript dev
+  'npm'                                 # [dev] node.js package manager
+                                        #       for javascript dev
+)
+
+# windows manager installations
+readonly WMPackagesToInstall=(
   'xorg-server'                         # [X11] display server for the X window
   'xorg-xinit'                          # [X11] program allows a user to manually
                                         #       start an Xorg display server.
-  'xorg-xdpyinfo'                       # [X11] retrieves screen information for some scripts
-  'xorg-xwininfo'                       # [X11] allows querying information about windows
   'xcompmgr'                            # [X11] utility for transparency and
-                                        #       removing screen-tearing.
   'xclip'                               # [X11] command line interface to the X11 clipboard.
-  'libx11'                              # [X11] dependency for st compilation.
-  'libxft'                              # [X11] dependency for st compilation.
-  'ffmpeg'                              # [tool] software suite of libraries and programs
-                                        #        for handling video audio and
-                                        #        other multimedia files and streams
-  'ttf-dejavu'                          # [rice] font
-  'ttf-liberation'                      # [rice] font
-  'screenfetch'                         # [rice] bash script that displays system
-                                        #        information alongside the
-                                        #        ASCII distribution logo
-  # not in use:
-  # 'chomium'                             # [browser] alternative
-  # 'firefox'                             # [browser] alternative
 )
 
-readonly packagesToInstallAUR=(
-  'brave-bin'                           # [browser] of choice.
+readonly WMpackagesToInstallAUR=(
+  'brave-bin'                           # [X11][browser] of choice.
                                         #           see: $BROWSER in ~/.zprofile
 )
 
-readonly packagesToMake=(
-  'lukesmithxyz/dwm.git'                # [X11] Luke's build of dwm (windows manager)
-  'LukeSmithxyz/st.git'                 # [X11] Luke's build of st (simple terminal)
-)
+WMcustomBuildsAndRicing() {
+  "${HOME}/bin/fix/fix-nuc-video-tearing"         # [X11] apply fix for video tearing on Intel's NUC device
+  "${HOME}/bin/installs/install-st"               # [X11] run build of st (simple terminal)
+  "${HOME}/bin/installs/install-dwm"              # [X11] run build of dwm (windows manager)
+}
+
 
 # utils
 readonly _QDel='[ qdots ]'
 readonly _Qcg=$'\033[1;32m'              # Green
 readonly _Qcy=$'\033[1;33m'              # Yellow
 readonly _Qce=$'\033[0m'                 # End
+readonly _Qcr=$'\033[0;31m'              # Red
 readonly _Qiw="[ ${_Qcy}!${_Qce} ]"      # Warn
 readonly _Qit="[ ${_Qcg}✔${_Qce} ]"      # Tick
-__echoIt() {
+readonly _Qia="[ ${_Qcy}?${_Qce} ]"      # Ask
+readonly _Qic="[ ${_Qcr}✖${_Qce} ]"      # Cross
+_echoIt() {
   local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
 }
-__msgNotInstalled() {
-  __echoIt "${_QDel}" "It seems that package: ${_Qcy}$1${_Qce} not installed! Intalling... " "${_Qiw}"
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_Qic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
 }
-__msgMakePackage() {
-  __echoIt "${_QDel}" "About to clone, make and make install package: ${_Qcy}$1${_Qce} ... " "${_Qiw}"
+_errorExit() {
+  _errorExitConstructor "${_QDel}" "${1}"
 }
-__msgInstalled() {
-  __echoIt "${_QDel}" "Package: ${_Qcy}$1${_Qce} already installed! Nothing to do." "${_Qiw}"
+_echoDone() {
+  _echoIt "$_QDel" "DONE!" "$_Qit" ; echo >&2
 }
-__isInstalledOnArch() {
+_msgNotInstalled() {
+  _echoIt "${_QDel}" "It seems that package: ${_Qcy}$1${_Qce} not installed! Intalling... " "${_Qiw}"
+}
+_msgInstalled() {
+  _echoIt "${_QDel}" "Package: ${_Qcy}$1${_Qce} already installed! Nothing to do." "${_Qiw}"
+}
+_isInstalledOnArch() {
   # duplicate with fn in general-functions.sh file
   # have to be a standalone script - can not depend on other helpers
   local package
@@ -78,16 +84,23 @@ __isInstalledOnArch() {
     echo 'false'
   fi;
 }
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  local msgDefaultAbort=${2:-'Abort script!'}
+  read -n 1 -s -r -p "${_QDel}${_Qia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
 
 installPackage() {
   local package
   package=${1}
   local isPackageInstalled
-  isPackageInstalled=$(__isInstalledOnArch "${package}")
-  if [ ${isPackageInstalled} = 'true' ] ; then
-    __msgInstalled "${package}"
+  isPackageInstalled=$(_isInstalledOnArch "${package}")
+  if [ "${isPackageInstalled}" = 'true' ] ; then
+    _msgInstalled "${package}"
   else
-    __msgNotInstalled "${package}"
+    _msgNotInstalled "${package}"
     sudo pacman -S --noconfirm "${package}"
   fi
 }
@@ -96,36 +109,50 @@ installPackageAUR() { \
   local package
   package=${1}
   local isPackageInstalled
-  isPackageInstalled=$(__isInstalledOnArch "${package}")
-  if [ ${isPackageInstalled} = 'true' ] ; then
-    __msgInstalled "${package}"
+  isPackageInstalled=$(_isInstalledOnArch "${package}")
+  if [ "${isPackageInstalled}" = 'true' ] ; then
+    _msgInstalled "${package}"
   else
-    __msgNotInstalled "${package}"
-    ${AUR_HELPER} -S --noconfirm ${package}
+    _msgNotInstalled "${package}"
+    "${AUR_HELPER}" -S --noconfirm "${package}"
   fi
 }
 
-makePackage() {
-  local package
-  package=${1}
-  local dir
-  __msgMakePackage "${package}"
-  dir=$(mktemp -d)
-	git clone --depth 1 "https://github.com/${package}" "$dir"
-	cd "$dir"
-	sudo make
-	sudo make install
+function builds() {
+  _echoIt "${_QDel}" "About to install ${_Qcy}special${_Qce} packages... " "${_Qiw}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    WMcustomBuildsAndRicing
+  else
+    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+  fi
+  _echoDone
 }
 
-for pkg in "${packagesToInstall[@]}" ; do
-  installPackage $pkg
-done
+function main() {
+  _echoIt "${_QDel}" "About to install ${_Qcy}qdots essentials${_Qce} packages... " "${_Qiw}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    for pkg in "${essentialsPackagesToInstall[@]}" ; do
+      installPackage "$pkg"
+    done
+  else
+    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+  fi
+  _echoIt "${_QDel}" "About to install ${_Qcy}qdots WM${_Qce} packages... " "${_Qiw}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    for pkg in "${WMPackagesToInstall[@]}" ; do
+      installPackage "$pkg"
+    done
+    for pkg in "${WMpackagesToInstallAUR[@]}" ; do
+      installPackageAUR "$pkg"
+    done
+  else
+    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+  fi
+  _echoDone
+}
 
-for pkg in "${packagesToInstallAUR[@]}" ; do
-  installPackageAUR $pkg
-done
-
-for pkg in "${packagesToMake[@]}" ; do
-  makePackage $pkg
-done
-
+main
+builds

@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# installation script for:
+# dwm
+# form: see: sourceGitHub
+# Author: qaraluch - 04.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
+
+# Main
+readonly sourceGitHub='lukesmithxyz/dwm.git'
+
+readonly explaination=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  installation script for:
+  ${_cy}dwm${_ce}
+  from: ${_cy}${sourceGitHub}${_ce}
+  for Arch Linux
+  this script will:
+  1. clone repo, make install
+EOL
+)
+
+main() {
+  echo "${explaination}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    performInstallation
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+performInstallation() {
+  makeInstallPackage "${sourceGitHub}" \
+    && _echoDone
+}
+
+makeInstallPackage() {
+  dir=$(mktemp -d)
+	git clone --depth 1 "https://github.com/$1" "$dir"
+	cd "$dir"
+	sudo make
+	sudo make install
+}
+
+main
