@@ -34,6 +34,7 @@ readonly WMPackagesToInstall=(
 readonly WMpackagesToInstallAUR=(
   'brave-bin'                           # [X11][browser] of choice.
                                         #           see: $BROWSER in ~/.zprofile
+  'betterlockscreen-git'                # [X11] lockscreen of choice
 )
 
 WMcustomBuildsAndRicing() {
@@ -43,6 +44,10 @@ WMcustomBuildsAndRicing() {
   "${HOME}/bin/installs/install-sddm"             # [X11] run installation of sddm (display manager)
 }
 
+finishsetup_betterlockscreen() {
+  betterlockscreen -u "${HOME}/.config/wallpaper.jpg" --blur 3    # for first use
+  systemctl enable betterlockscreen@$USER                         # lockscreen for suspend mode
+}
 
 # utils
 readonly _QDel='[ qdots ]'
@@ -119,7 +124,18 @@ installPackageAUR() { \
   fi
 }
 
-function builds() {
+finishsetups() {
+  _echoIt "${_QDel}" "About to ${_Qcy}finish setup${_Qce} packages... " "${_Qiw}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    finishsetup_betterlockscreen
+  else
+    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+  fi
+  _echoDone
+}
+
+builds() {
   _echoIt "${_QDel}" "About to install ${_Qcy}special${_Qce} packages... " "${_Qiw}"
   _yesConfirmOrSkip
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
@@ -130,7 +146,7 @@ function builds() {
   _echoDone
 }
 
-function main() {
+main() {
   _echoIt "${_QDel}" "About to install ${_Qcy}qdots essentials${_Qce} packages... " "${_Qiw}"
   _yesConfirmOrSkip
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
@@ -157,3 +173,4 @@ function main() {
 
 main
 builds
+finishsetups
