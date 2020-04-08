@@ -40,6 +40,7 @@ WMcustomBuildsAndRicing() {
   "${HOME}/bin/fix/fix-nuc-video-tearing"         # [X11] apply fix for video tearing on Intel's NUC device
   "${HOME}/bin/installs/install-st"               # [X11] run build of st (simple terminal)
   "${HOME}/bin/installs/install-dwm"              # [X11] run build of dwm (windows manager)
+  "${HOME}/bin/installs/install-sddm"             # [X11] run installation of sddm (display manager)
 }
 
 

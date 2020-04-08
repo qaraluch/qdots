@@ -1,0 +1,15 @@
+# sddm-qdots config file
+# is ment to be copied to dir:
+# /etc/sddm.conf.d/
+# by install-sddm script
+
+[Autologin]
+# Name of session file for autologin session (if empty try last logged in)
+Session=xinitrc
+
+# Username for autologin session
+User={{ .gituser }}
+
+[Theme]
+# Current theme name
+Current=chili

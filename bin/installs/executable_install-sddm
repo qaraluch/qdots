@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# installation script for:
+# sddm-chili
+# Simple Desktop Display Manager with Chili theme
+# form: see: sourceGitHub
+# Author: qaraluch - 04.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
+_msgNotInstalled() {
+  _echoIt "It seems that package: ${_cy}$1${_ce} not installed! Intalling... " "${_iw}"
+}
+_msgInstalled() {
+  _echoIt "Package: ${_cy}$1${_ce} already installed! Nothing to do." "${_iw}"
+}
+
+# Main
+readonly sourceGitHub='MarianArlt/sddm-chili'
+readonly destinationThemeFiles='/usr/share/sddm/themes'
+readonly sourceConfigFile="${HOME}/.local/share/chezmoi/dot_config/sddm/sddm-qdots.conf"
+readonly destinationConfigFile="/etc/sddm.conf.d/sddm-qdots.conf"
+
+readonly dependencies=(
+  xinit-xsession           # sddm is launched via it
+  sddm
+  qt5-graphicaleffects
+  qt5-quickcontrols
+)
+
+readonly explaination=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  installation script for:
+  ${_cy}sddm & chili${_ce} theme
+  from: ${_cy}${sourceGitHub}${_ce}
+  for Arch Linux
+  this script will:
+  1. install dependecies
+  2. clone repo to the temp folder
+  3. copy theme files
+     to:   ${_cy}${destinationThemeFiles}${_ce}
+  4. copy config file:
+     from: ${_cy}${sourceConfigFile}${_ce}
+     to:   ${_cy}${destinationConfigFile}${_ce}
+  5. enable systemd service
+EOL
+)
+# no need to make .xinitrc executable
+# chezmoi will to if for us
+
+main() {
+  echo "${explaination}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    performInstallation
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+performInstallation() {
+  dir=$(mktemp -d)
+  installDependecies
+	git clone --depth 1 "https://github.com/${sourceGitHub}" "$dir"
+  sudo cp -vaf "${dir}" "${destinationThemeFiles}/chili"
+  sudo cp -vf "${sourceConfigFile}" "${destinationConfigFile}"
+  systemctl enable sddm.service
+  _echoDone
+}
+
+installDependecies() {
+  for pkg in "${dependencies[@]}" ; do
+    installPackage "${pkg}"
+  done
+}
+
+installPackage() {
+  local package
+  package=${1}
+  local isPackageInstalled
+  isPackageInstalled=$(_isInstalledOnArch "${package}")
+  if [ "${isPackageInstalled}" = 'true' ] ; then
+    _msgInstalled "${package}"
+  else
+    _msgNotInstalled "${package}"
+    sudo pacman -S --noconfirm "${package}"
+  fi
+}
+
+_isInstalledOnArch() {
+  local package
+  package="$1"
+  local check
+  check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+  if [ -n "${check}" ] ; then
+    echo 'true'
+  else
+    echo 'false'
+  fi;
+}
+
+main
