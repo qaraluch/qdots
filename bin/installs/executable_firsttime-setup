@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# fix-nuc-video-tearing
+# installation script for:
+# first time setup after
+# dotfiles qdots installation
+# some of the setups need to be run
+# on Xorg running
 # Author: qaraluch - 04.2020
 
 # Utils:
@@ -11,6 +15,7 @@ readonly _ce=$'\033[0m'               # color end
 readonly _cr=$'\033[0;31m'            # color red
 readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
 readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
 _echoItConstructor() {
   local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
 }
@@ -27,57 +32,39 @@ _errorExitConstructor() {
 _errorExit() {
   _errorExitConstructor "${_pDel}" "${1}"
 }
-_yesConfirmOrAbort() {
+_yesConfirmOrSkip() {
   local msg=${1:-'Continue'}
-  local msgDefaultAbort=${2:-'Abort script!'}
   read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
   echo >&2
   REPLY=${REPLY:-'Y'}
-  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
-    _errorExit "${msgDefaultAbort}"
-  fi
 }
 
-readonly configPath='/etc/X11/xorg.conf.d/20-intel.conf'
-
+# Main
 readonly explaination=$(cat <<EOL
   ${_cy}${_pName}${_ce}
-  is quick fix
+  installation script for:
   for Arch Linux
-  to solve video tearing problem on
-    Intel's NUC unit
-    product code:
-    BOXNUC8i3BEK2
-    with graphic card:
-    Intel Iris Plus Graphics 655
   this script will:
-  1. install X11 driver: xf86-video-intel
-  2. create conf file for x.org deamon in:
-     "${configPath}"
-  see: linux-graphic-card.md
+  1. fix video tearing (fix-nuc-video-tearing)
+  2. install display manager: sddm with chili theme (install-sddm)
+  3. install betterlockscreen (install-betterlockscreen)
 EOL
 )
-
-readonly config=$(cat <<EOL
-Section "Device"
-    Identifier  "Device0"
-    Driver      "intel"
-    VendorName  "INTEL Corporation"
-    Option "TripleBuffer" "true"
-    Option "TearFree" "true"
-EndSection
-EOL
-)
-
-performFix() {
-  sudo pacman -S --noconfirm xf86-video-intel
-  echo "${config}" | sudo tee "${configPath}"
-}
 
 main() {
   echo "${explaination}"
-  _yesConfirmOrAbort
-  performFix
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    performInstallation
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+performInstallation() {
+  fix-nuc-video-tearing         # [X11] apply fix for video tearing on Intel's NUC device
+  install-sddm                  # [X11] run installation of sddm (display manager)
+  install-betterlockscreen      # [X11] run installation of betterlockscreen from AUR
   _echoDone
 }
 

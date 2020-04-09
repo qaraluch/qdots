@@ -1,6 +1,11 @@
 #!/bin/bash
 
 # qdots - programs needed for this dotfiles
+# basic and straightforward
+# for custom builds see scripts in function:
+# WMcustomBuildsAndRicing
+# and
+# firsttime-setup script
 
 readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
 
@@ -29,24 +34,18 @@ readonly WMPackagesToInstall=(
                                         #       start an Xorg display server.
   'xcompmgr'                            # [X11] utility for transparency and
   'xclip'                               # [X11] command line interface to the X11 clipboard.
+  'ttf-dejavu'                          # [X11][font] basic font face.
+  'ttf-liberation'                      # [X11][font] basic font face.
 )
 
 readonly WMpackagesToInstallAUR=(
   'brave-bin'                           # [X11][browser] of choice.
                                         #           see: $BROWSER in ~/.zprofile
-  'betterlockscreen-git'                # [X11] lockscreen of choice
 )
 
 WMcustomBuildsAndRicing() {
-  "${HOME}/bin/fix/fix-nuc-video-tearing"         # [X11] apply fix for video tearing on Intel's NUC device
   "${HOME}/bin/installs/install-st"               # [X11] run build of st (simple terminal)
   "${HOME}/bin/installs/install-dwm"              # [X11] run build of dwm (windows manager)
-  "${HOME}/bin/installs/install-sddm"             # [X11] run installation of sddm (display manager)
-}
-
-finishsetup_betterlockscreen() {
-  betterlockscreen -u "${HOME}/.config/wallpaper.jpg" --blur 3    # for first use
-  systemctl enable betterlockscreen@$USER                         # lockscreen for suspend mode
 }
 
 # utils
@@ -124,17 +123,6 @@ installPackageAUR() { \
   fi
 }
 
-finishsetups() {
-  _echoIt "${_QDel}" "About to ${_Qcy}finish setup${_Qce} packages... " "${_Qiw}"
-  _yesConfirmOrSkip
-  if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    finishsetup_betterlockscreen
-  else
-    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
-  fi
-  _echoDone
-}
-
 builds() {
   _echoIt "${_QDel}" "About to install ${_Qcy}special${_Qce} packages... " "${_Qiw}"
   _yesConfirmOrSkip
@@ -173,4 +161,3 @@ main() {
 
 main
 builds
-finishsetups

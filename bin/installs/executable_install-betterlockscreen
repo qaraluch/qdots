@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # installation script for:
-# sddm-chili
-# Simple Desktop Display Manager with Chili theme
+# betterlockscreen
 # form: see: sourceGitHub
 # Author: qaraluch - 04.2020
 
@@ -48,42 +47,27 @@ _msgInstalled() {
 # Main
 readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
 
-readonly sourceGitHub='MarianArlt/sddm-chili'
-readonly destinationThemeFiles='/usr/share/sddm/themes'
-readonly sourceConfigFile="${HOME}/.config/sddm/sddm-qdots.conf"
-readonly destinationDir="/etc/sddm.conf.d"
-readonly destinationConfigFile="/etc/sddm.conf.d/sddm-qdots.conf"
-
-readonly packages=(
-  sddm
-  qt5-graphicaleffects
-  qt5-svg
-  qt5-quickcontrols
+readonly packageAUR=(
+  'betterlockscreen-git'                #  https://github.com/pavanjadhaw/betterlockscreen
 )
 
-readonly dependenciesAUR=(
-  xinit-xsession           # sddm is launched via it
+readonly dependencies=(
+  xorg-xset
 )
 
 readonly explaination=$(cat <<EOL
   ${_cy}${_pName}${_ce}
   installation script for:
-  ${_cy}sddm & chili${_ce} theme
-  from: ${_cy}${sourceGitHub}${_ce}
+  ${_cy}betterlockscreen${_ce}
+  from: AUR
   for Arch Linux
   this script will:
   1. install dependecies
-  2. clone repo to the temp folder
-  3. copy theme files
-     to:   ${_cy}${destinationThemeFiles}${_ce}
-  4. copy config file:
-     from: ${_cy}${sourceConfigFile}${_ce}
-     to:   ${_cy}${destinationConfigFile}${_ce}
-  5. enable systemd service
+  2. install betterlockscreen itself
+  3. update betterlockscreen
+  4. enable systemd service
 EOL
 )
-# no need to make .xinitrc executable
-# chezmoi will to if for us
 
 main() {
   echo "${explaination}"
@@ -96,26 +80,21 @@ main() {
 }
 
 performInstallation() {
-  dir=$(mktemp -d)
-  installPackages
-  installDependeciesAUR
-	git clone --depth 1 "https://github.com/${sourceGitHub}" "$dir"
-  sudo cp -af "${dir}" "${destinationThemeFiles}/chili"
-  sudo chmod +rx -R "${destinationThemeFiles}/chili"
-  sudo mkdir -vp "${destinationDir}"
-  sudo cp -vf "${sourceConfigFile}" "${destinationConfigFile}"
-  systemctl enable sddm.service
+  installDependecies
+  installPackagesAUR
+  betterlockscreen -u "${HOME}/.config/wallpaper.jpg" --blur 4    # for first use
+  systemctl enable betterlockscreen@$USER                         # lockscreen for suspend mode
   _echoDone
 }
 
-installPackages() {
-  for pkg in "${packages[@]}" ; do
+installDependecies() {
+  for pkg in "${dependencies[@]}" ; do
     installPackage "${pkg}"
   done
 }
 
-installDependeciesAUR() {
-  for pkg in "${dependenciesAUR[@]}" ; do
+installPackagesAUR() {
+  for pkg in "${packageAUR[@]}" ; do
     installPackageAUR "${pkg}"
   done
 }
@@ -133,7 +112,7 @@ installPackage() {
   fi
 }
 
-installPackageAUR() { \
+installPackageAUR() {
   local package
   package=${1}
   local isPackageInstalled
