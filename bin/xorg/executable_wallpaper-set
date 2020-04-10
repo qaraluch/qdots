@@ -6,12 +6,12 @@
 readonly wallpaperLocation="${QDOTS_WALLPAPER}"
 
 # when pass file path as argument
-[ -f "$1" ] && ln -sf "$(readlink -f "$1")" "$wallpaperLocation"
-#&& notify-send -i "$wallpaperLocation" "Changing wallpaper..."
+[ -f "$1" ] && ln -sf "$(readlink -f "$1")" "$wallpaperLocation" \
+  && notify-send "Changed wallpaper."
 
 # when pass dir path as argument
 # set random image as wallpaper
-[ -d "$1" ] && ln -sf "$(find "$(readlink -f "$1")" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$wallpaperLocation"
-#&& notify-send -i "$wallpaperLocation" "Random Wallpaper chosen."
+[ -d "$1" ] && ln -sf "$(find "$(readlink -f "$1")" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$wallpaperLocation" \
+  && notify-send "Random wallpaper chosen."
 
 xwallpaper --zoom "$wallpaperLocation"
