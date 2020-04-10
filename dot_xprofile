@@ -7,5 +7,5 @@ setxkbmap -layout pl &                # Polish keyboard layout
 wallpaper-set &		                    # set wallpaper
 xcompmgr &		                        # for transparency
 xrdb $HOME/.Xresources &	            # Xresources for colors/settings
-# unclutter &		                        # remove mouse when idle
+unclutter &		                        # remove mouse when idle
 

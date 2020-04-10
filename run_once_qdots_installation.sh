@@ -35,6 +35,7 @@ readonly WMPackagesToInstall=(
   'xcompmgr'                            # [X11] utility for transparency and
   'xwallpaper'                          # [X11] utility for wallpaper changing
   'xclip'                               # [X11] command line interface to the X11 clipboard.
+  'unclutter'                           # [X11] hides your X mouse when idle.
   'ttf-dejavu'                          # [X11][font] basic font face.
   'ttf-liberation'                      # [X11][font] basic font face.
 )
