@@ -4,15 +4,6 @@
 # Qdots settings
 export QDOTS_USER_PROMPT={{ .qdotsprompt }}
 
-# Qdots vars
-export QDOTS_CONF_DIR="$HOME/.config"
-export QDOTS_ZSH_CONF_DIR="$QDOTS_CONF_DIR/zsh"
-export QDOTS_ZSH_LOCALSHARE_DIR="$HOME/.local/share"
-export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
-export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
-export QDOTS_ZSH_CACHE_PLUGS_DIR="$HOME/.cache/zsh/plugs"
-export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
-
 # Tmux autostart
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   exec tmux
