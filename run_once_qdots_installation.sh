@@ -33,6 +33,7 @@ readonly WMPackagesToInstall=(
   'xorg-xinit'                          # [X11] program allows a user to manually
                                         #       start an Xorg display server.
   'xcompmgr'                            # [X11] utility for transparency and
+  'xwallpaper'                          # [X11] utility for wallpaper changing
   'xclip'                               # [X11] command line interface to the X11 clipboard.
   'ttf-dejavu'                          # [X11][font] basic font face.
   'ttf-liberation'                      # [X11][font] basic font face.

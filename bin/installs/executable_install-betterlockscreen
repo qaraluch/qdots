@@ -45,10 +45,12 @@ _msgInstalled() {
 }
 
 # Main
-readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
+readonly AUR_HELPER='yay'                         # installed by QALACS script (arch-bootstrap repo)
+
+readonly wallpaperPath="${QDOTS_WALLPAPER_LOCK}"  # see: .zshrc
 
 readonly packageAUR=(
-  'betterlockscreen-git'                #  https://github.com/pavanjadhaw/betterlockscreen
+  'betterlockscreen-git'                          #  https://github.com/pavanjadhaw/betterlockscreen
 )
 
 readonly dependencies=(
@@ -82,8 +84,8 @@ main() {
 performInstallation() {
   installDependecies
   installPackagesAUR
-  betterlockscreen -u "${HOME}/.config/wallpaper.jpg" --blur 4    # for first use
-  systemctl enable betterlockscreen@$USER                         # lockscreen for suspend mode
+  betterlockscreen -u "${wallpaperPath}" --blur 2                   # for first use
+  systemctl enable betterlockscreen@$USER                           # lockscreen for suspend mode
   _echoDone
 }
 

@@ -7,6 +7,11 @@ export EDITOR="$VISUAL"
 export PAGER=less
 export BROWSER='brave'
 
+# Wallpapers paths
+# can not be in .zshrc
+export QDOTS_WALLPAPER="$HOME/.local/share/wallpaper-qdots"
+export QDOTS_WALLPAPER_LOCK="$HOME/.local/share/wallpaper-lock-qdots"
+
 # XDG cofiguration for zsh
 export ZDOTDIR=$HOME/.config/zsh
 

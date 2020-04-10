@@ -3,7 +3,8 @@
 # Sourced by .xinitrc
 
 xset r rate 300 50 &	                # speed xrate up
-setxkbmap -layout pl                  # Polish keyboard layout
+setxkbmap -layout pl &                # Polish keyboard layout
+wallpaper-set &		                    # set wallpaper
 xcompmgr &		                        # for transparency
 xrdb $HOME/.Xresources &	            # Xresources for colors/settings
 # unclutter &		                        # remove mouse when idle
