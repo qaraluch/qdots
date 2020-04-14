@@ -1,0 +1,7 @@
+#!/bin/bash
+# get RAM memory
+# for status bar
+# on Xorg
+
+free -h | sed -n '2{p;q}' | awk '{print " ", $3 "/" $2 " "}' | sed s/i//g
+#                                        ^-- placeholder for icon

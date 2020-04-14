@@ -1,0 +1,6 @@
+#!/bin/bash
+# get time
+# for status bar
+# on Xorg
+
+date '+ %Y-%m-%d %H:%M (%a)'
