@@ -51,6 +51,7 @@ WMcustomBuildsAndRicing() {
   "${HOME}/bin/installs/install-st"               # [X11] run build of st (simple terminal)
   "${HOME}/bin/installs/install-dwm"              # [X11] run build of dwm (windows manager)
   "${HOME}/bin/installs/install-dwmblocks"        # [X11] run build of dwmblocks (statusbar)
+  "${HOME}/bin/installs/install-dmenu"            # [X11] run build of dmenu
 }
 
 # utils
