@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 02.2019 - MIT
+
+# Simple automation for git init new repo.
+# WARNING: will remove old .git dir and initiate new one!
+
+# TODO: add CLI option for add remote
+
+readonly _pArgs="$@"
+readonly _pDel='[ git-init ]'
+
+# no need for now: see todos
+# readonly localRepoLocation="/mnt/g/Dropbox/_GIT_REMOTE"
+
+main() {
+  local dirName=${PWD##*/}
+  _echoIt "About to init new ${_cy}GIT${_ce} repo... "
+  _yesConfirmOrAbort 'Are you sure that you are in right repo dir?'
+  local gitDir="./.git"
+  if _isDir "${gitDir}" ; then
+    _echoIt "It seems that ${_cy}.git${_ce} already exists!" "${_iw}"
+    _echoIt "   ... are you sure?"
+    _pressAnyKey
+    rm -rf "${gitDir}"
+  fi
+  gitInit
+  local repoName=$(_readUserInputDefault $dirName 'Input repo name')
+  _echoIt "My remote repo name will be: ${_cy}${repoName}${_ce}" "${_iw}"
+  # local repoPath="${localRepoLocation}/${repoName}.git"
+  # gitInitRemote
+  _echoDone
+}
+
+gitInit() {
+  git init
+  touch .gitignore
+  git add .
+  git commit -m "First commit"
+}
+
+# gitInitRemote() {
+#   git init --bare $repoPath
+#   git remote add origin $repoPath
+#   git push -u origin master
+# }
+
+# Utils:
+readonly _cr=$'\033[0;31m'            # color red
+readonly _cg=$'\033[1;32m'            # color green
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cb=$'\033[1;34m'            # color blue
+readonly _cm=$'\033[1;35m'            # color magenta
+readonly _cc=$'\033[1;36m'            # color cyan
+readonly _ce=$'\033[0m'               # color end
+
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+
+_yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  local msgDefaultAbort=${2:-'Abort script!'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    _errorExit "${msgDefaultAbort}"
+  fi
+}
+
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+
+_isDir() {
+  local dir=$1
+  [[ -d $dir ]]
+}
+
+_pressAnyKey() {
+  read -n 1 -s -r -p "${_pDel}${_ia} Press [any] key to continue. "
+  echo >&2
+}
+
+_readUserInputDefault() {
+  local defaultValue=${1:-'var'}
+  local msg=${2:-'Enter here'}
+  read -r -p "${_pDel}${_ia} ${msg} [${defaultValue}] ${_cb}>${_ce} "
+  echo "${REPLY:-${defaultValue}}"
+}
+
+main $_pArgs

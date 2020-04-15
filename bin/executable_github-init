@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 02.2019 - MIT
+
+# Simple automation for adding existing git repo to GitHub.
+# It inits repo on GitHub site and adds new urls to remote origin.
+# This script gets a username from .gitconfig.
+# If it indicates that your default username is an empty string, '
+# you can set it with:
+# git config --add user.user <YOUR_GIT_USERNAME>
+
+# credists:
+# jerrykrinock - https://gist.github.com/jerrykrinock/6618003
+# robwierzbowski - https://gist.github.com/robwierzbowski/5430952/
+
+readonly _pArgs="$@"
+readonly _pDel='[ github-init ]'
+
+main() {
+  _echoIt "About to init new ${_cy}GitHub${_ce} repo... "
+  _yesConfirmOrAbort 'Are you sure that you are in the right repo dir?'
+  if checkIfInGitRepo ; then
+    local dirName=${PWD##*/}
+    local gitUserName=$(git config user.name)
+    local repoUserName=$(_readUserInputDefault $gitUserName 'Input github user name')
+    local repoName=$(_readUserInputDefault $dirName 'Input github repo name')
+    local repoDescription=$(_readUserInputDefault '...' 'Input github repo description')
+    local repoTypeDefault='public'
+    local repoType=$(_readUserInputDefault $repoTypeDefault 'Input github repo type')
+    local repoPrivateFlag=false
+    if _isStringEqual "${repoType}" 'private'; then
+      repoPrivateFlag=true
+    fi
+    printSummary
+    _pressAnyKey
+    initNewGitHubRepo
+    local repoURL="https://github.com/${repoUserName}/${repoName}.git"
+    _echoIt "Open following link: ${_cy}${repoURL}${_ce}"
+    addNewURLtoRemoteOrigin
+  else
+    _errorExit 'You are not in the git repo dir... Abort script!'
+  fi
+}
+
+checkIfInGitRepo() {
+  git rev-parse HEAD > /dev/null 2>&1
+}
+
+printSummary() {
+  _echoIt ""
+  _echoIt "Summary... "
+  _echoIt "In current dir ${_cy}${dirName}${_ce}, it creates on GitHub.com new ${_cy}${repoType}${_ce} repo named: ${_cy}${repoName}${_ce} as a user: ${_cy}${repoUserName}${_ce}, with following description: ${_cy}${repoDescription}${_ce}."
+}
+
+initNewGitHubRepo() {
+  _echoIt "Creating repo..."
+  curl -u $repoUserName https://api.github.com/user/repos -d "{\"name\": \"$repoName\", \"description\": \"${repoDescription}\", \"private\": $repoPrivateFlag, \"has_issues\": true, \"has_downloads\": true, \"has_wiki\": false}"
+  [ $? ] && _echoDone
+}
+
+addNewURLtoRemoteOrigin() {
+  _yesConfirmOrAbort 'Do you want add GitHub remote to the repo?'
+  local localGitRemote=$(git remote get-url origin);
+  git remote set-url --add --push origin "${localGitRemote}"
+  git remote set-url --add --push origin "${repoURL}"
+  git remote -v
+  _echoDone
+}
+
+# Utils:
+readonly _cr=$'\033[0;31m'            # color red
+readonly _cg=$'\033[1;32m'            # color green
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cb=$'\033[1;34m'            # color blue
+readonly _cm=$'\033[1;35m'            # color magenta
+readonly _cc=$'\033[1;36m'            # color cyan
+readonly _ce=$'\033[0m'               # color end
+
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+
+_yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  local msgDefaultAbort=${2:-'Abort script!'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    _errorExit "${msgDefaultAbort}"
+  fi
+}
+
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+
+_readUserInputDefault() {
+  local defaultValue=${1:-'var'}
+  local msg=${2:-'Enter here'}
+  read -r -p "${_pDel}${_ia} ${msg} [${defaultValue}] ${_cb}>${_ce} "
+  echo "${REPLY:-${defaultValue}}"
+}
+
+_pressAnyKey() {
+  read -n 1 -s -r -p "${_pDel}${_ia} Press [any] key to continue. "
+  echo >&2
+}
+
+_isStringEqual() {
+  [[ "$1" == "$2" ]]
+}
+
+main $_pArgs
