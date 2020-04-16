@@ -19,6 +19,8 @@ readonly essentialsPackagesToInstall=(
                                         #            need for shell scripts development
   'moreutils'                           # [util] shell scripting utility: ifne
                                         #        need for: fzf, nvim alias (qdots)
+  'wget'                                # [tool] simple tool to retrive files using
+                                        #        HTTPS, HTTP, FTP, FTPS
   # extras
   'nodejs'                              # [dev] a bit of overkill but used
                                         #       for prettier in nvim
