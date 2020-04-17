@@ -1,0 +1,19 @@
+#!/bin/bash
+# show sound volume
+# for status bar
+# on Xorg
+# uses PulseAudio by default
+
+volumeHuman=$(pamixer --get-volume-human)
+icon='Vol:'
+
+# placeholder for now
+# if [ "$vol" -gt "70" ]; then
+# 	icon=""
+# elif [ "$vol" -lt "30" ]; then
+# 	icon=""
+# else
+# 	icon=""
+# fi
+
+printf " %s %s %s" "$icon" "$volumeHuman" " "

@@ -22,8 +22,11 @@ export QDOTS_ZSH_CACHE_PLUGS_DIR="$HOME/.cache/zsh/plugs"
 export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
 
-# XDG cofiguration for zsh
-export ZDOTDIR=$HOME/.config/zsh
+# XDG cofigurations
+export ZDOTDIR="$HOME/.config/zsh"
+# legacy alsa config for reference
+# pulseaudio-alsa took over audio control
+# export ALSA_CONFIG_PATH="$HOME/.config/alsa/asoundrc"
 
 # User scripts
 # - add scripts (~/bin and subdirs) to the $PATH

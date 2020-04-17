@@ -1,0 +1,26 @@
+#!/bin/bash
+# general wrapper utility for
+# sound control
+# uses by default pamixer and pulseaudio
+# updates also dwmblocks
+
+jump="${2:-5}"
+
+toggle() { pamixer --toggle-mute ;}
+mute() { pamixer --mute ;}
+unmute() { pamixer --unmute ;}
+up() { pamixer --increase "$jump" ;}
+down() { pamixer --decrease "$jump" ;}
+open() { pulsemixer ;}
+
+case "$1" in
+	toggle) toggle ;;
+	mute) mute ;;
+	unmute) unmute ;;
+	up) up ;;
+	down) down ;;
+	open) open ;;
+esac
+
+# Update dwmblocks
+pkill -RTMIN+10 dwmblocks

@@ -49,6 +49,7 @@ readonly explaination=$(cat <<EOL
   2. install display manager: sddm with chili theme (install-sddm)
   3. set up wallpaper
   4. install betterlockscreen (install-betterlockscreen)
+  5. run audio controler
 EOL
 )
 
@@ -67,6 +68,7 @@ performInstallation() {
   install-sddm                  # [X11] run installation of sddm (display manager)
   setup_wallpaper
   install-betterlockscreen      # [X11] run installation of betterlockscreen from AUR
+  run_audiocontroller           # pulseaudio
   _echoDone
 }
 
@@ -75,6 +77,10 @@ setup_wallpaper() {
   cp -vf "${qdotsRepoWallpaperExample}" "${QDOTS_WALLPAPER}"
   cp -vf "${qdotsRepoWallpaperExample}" "${QDOTS_WALLPAPER_LOCK}"
   wallpaper-set                                                                   # see: bin/xorg/
+}
+
+run_audiocontroller() {
+   pulseaudio --start
 }
 
 main
