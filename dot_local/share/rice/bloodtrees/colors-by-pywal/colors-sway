@@ -1,0 +1,21 @@
+set $wallpaper /home/t/dev/rice/wallpaper-qdots
+
+set $background #0b0a18
+set $foreground #dda4a9
+
+set $color0 #0b0a18
+set $color1 #5D284F
+set $color2 #5A475F
+set $color3 #9B0830
+set $color4 #E2122E
+set $color5 #9B2551
+set $color6 #E0254C
+set $color7 #dda4a9
+set $color8 #9a7276
+set $color9 #5D284F
+set $color10 #5A475F
+set $color11 #9B0830
+set $color12 #E2122E
+set $color13 #9B2551
+set $color14 #E0254C
+set $color15 #dda4a9

@@ -1,0 +1,23 @@
+" Special
+let wallpaper  = "/home/t/dev/rice/wallpaper-qdots"
+let background = "#0b0a18"
+let foreground = "#dda4a9"
+let cursor     = "#dda4a9"
+
+" Colors
+let color0  = "#0b0a18"
+let color1  = "#5D284F"
+let color2  = "#5A475F"
+let color3  = "#9B0830"
+let color4  = "#E2122E"
+let color5  = "#9B2551"
+let color6  = "#E0254C"
+let color7  = "#dda4a9"
+let color8  = "#9a7276"
+let color9  = "#5D284F"
+let color10 = "#5A475F"
+let color11 = "#9B0830"
+let color12 = "#E2122E"
+let color13 = "#9B2551"
+let color14 = "#E0254C"
+let color15 = "#dda4a9"

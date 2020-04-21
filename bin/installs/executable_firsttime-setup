@@ -47,7 +47,7 @@ readonly explaination=$(cat <<EOL
   this script will:
   1. fix video tearing (fix-nuc-video-tearing)
   2. install display manager: sddm with chili theme (install-sddm)
-  3. set up wallpaper
+  3. install ricing theme
   4. install betterlockscreen (install-betterlockscreen)
   5. run audio controler
 EOL
@@ -64,19 +64,13 @@ main() {
 }
 
 performInstallation() {
+  # order of run scripts do matter!
   fix-nuc-video-tearing         # [X11] apply fix for video tearing on Intel's NUC device
   install-sddm                  # [X11] run installation of sddm (display manager)
-  setup_wallpaper
+  install-rice                  # [X11] default ricing script
   install-betterlockscreen      # [X11] run installation of betterlockscreen from AUR
   run_audiocontroller           # pulseaudio
   _echoDone
-}
-
-setup_wallpaper() {
-  local qdotsRepoWallpaperExample="${HOME}/.config/wallpaper-firsttime-example"
-  cp -vf "${qdotsRepoWallpaperExample}" "${QDOTS_WALLPAPER}"
-  cp -vf "${qdotsRepoWallpaperExample}" "${QDOTS_WALLPAPER_LOCK}"
-  wallpaper-set                                                                   # see: bin/xorg/
 }
 
 run_audiocontroller() {

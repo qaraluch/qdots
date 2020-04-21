@@ -11,15 +11,23 @@ export SUDO_ASKPASS="${HOME}/bin/xorg/dmenu/askpass-dm"
 # Qdots vars
 # wallpaper vars can not be in .zshrc
 # other placed here for consistency
+export QDOTS_RICE_DIR="$HOME/.local/share/rice"
+export QDOTS_RICE_THEME_SOURCE_NAME='bloodtrees'
+export QDOTS_RICE_PATH="$QDOTS_RICE_DIR/$QDOTS_RICE_THEME_SOURCE_NAME"
+export QDOTS_RICE_XRESOURCES="$QDOTS_RICE_PATH/colors-by-pywal/colors.Xresources"
+export QDOTS_RICE_SCRIPT="$QDOTS_RICE_PATH/colors-by-pywal/colors.sh"
+export QDOTS_RICE_SEQUENCES="$QDOTS_RICE_PATH/colors-by-pywal/sequences"
 export QDOTS_WALLPAPER="$HOME/.local/share/wallpaper-qdots"
 export QDOTS_WALLPAPER_LOCK="$HOME/.local/share/wallpaper-lock-qdots"
+
 export QDOTS_CONF_DIR="$HOME/.config"
+export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
+
 export QDOTS_ZSH_CONF_DIR="$QDOTS_CONF_DIR/zsh"
 export QDOTS_ZSH_LOCALSHARE_DIR="$HOME/.local/share"
 export QDOTS_ZSH_HISTORY_DIR="$HOME/.local/share/zsh"
 export QDOTS_ZSH_CACHE_DIR="$HOME/.cache/zsh"
 export QDOTS_ZSH_CACHE_PLUGS_DIR="$HOME/.cache/zsh/plugs"
-export QDOTS_FUNCTIONS_DIR="$QDOTS_CONF_DIR/functions"
 
 
 # XDG cofigurations
