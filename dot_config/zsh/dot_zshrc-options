@@ -25,7 +25,7 @@ zle -N edit-command-line
 # A-c - fzf - not working due to polish keyboard (see: below)
 # C-g - fzf-marks - open marks menu
 # space - zsh-abbrev-alias - expand abbreviation
-bindkey -M viins '\\j' vi-cmd-mode                     # zsh-vimto - insert mode
+bindkey -M viins 'jk' vi-cmd-mode                      # zsh-vimto - turn normal mode on
 bindkey '\C-e'     fzf-cd-widget                       # re-binding fzf's default alt-c binding
 bindkey '^n' forward-word                              # ctrl-n - alternative move forward one word
                                                        # ctrl-w - move back one world (default zhs)
