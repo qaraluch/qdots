@@ -51,7 +51,7 @@ zle -N zle-insert-last-typed-word;
 # usage: in vi mode: hit <esc>, :, and type:
 # - msg
 # - hash
-# - status
+# - add
 fzf-choose-git-msg() {
   echo "\"$( git-get-logs | fzf --layout=reverse --border | cut -d " " -f2-)\""
        # ^- add quotations to git msg
@@ -99,7 +99,7 @@ zle-fzf-git-get-status-item() {
     zle -M "    ... Sorry. Not in git repo!"
   fi
 }
-zle -N status zle-fzf-git-get-status-item
+zle -N add zle-fzf-git-get-status-item
 
 # For locate command
 fzf-choose-locate-item() {
