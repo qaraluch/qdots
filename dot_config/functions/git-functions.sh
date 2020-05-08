@@ -26,6 +26,7 @@ git-commit-better() { git commit -v $* && git-status-log ; }
 git-diff() { git diff $* -- . ':(exclude)package-lock.json' ':(exclude)yarn.lock' ; }
 git-idiot() { git add -A && git commit --amend --no-edit ; }
 git-push() { git push $* && git-status-log ; }
+git-checkout() { git checkout $* && git-status-log ; }
 git-rebase() { git rebase -i "HEAD~$1" ; }
 git-status() { git status -s ; }
 git-status-log() { git-status ; _echoIt ; git-log 10 ; }

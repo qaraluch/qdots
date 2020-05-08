@@ -61,13 +61,16 @@ alias e='exit'
 alias g='git-g-alias'
 alias ga='git-add-status'
 alias gd='git-diff'
+alias gds='git-diff --staged'
 alias gidiot='git-idiot'
 alias gc="git-commit-better"
 alias gl='git-log 10'
 alias gld='git-log-date 10'
 alias glt='git-log-tree'
-alias gpush='git-push'
-alias grebase='git-rebase'
+alias gp='git-push'
+alias gr='git-rebase'
+alias gch='git-checkout'
+alias gchm='git-checkout master'
 
 alias gh='ag-here'
 
