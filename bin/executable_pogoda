@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Display current weather forecast in the terminal.
+# [chubin/wttr.in: The right way to check the weather](https://github.com/chubin/wttr.in)
+# Tip: pogoda Stalowa+Wola
 # Author: qaraluch - 01.2019 - MIT
 
 readonly _pArgs="$@"
