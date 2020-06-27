@@ -3,12 +3,12 @@
 # Sourced by .xinitrc
 
 xset r rate 300 50 &	                    # speed xrate up
+xrdb $HOME/.Xresources &	                # Xresources for colors/settings
+[ -f "$QDOTS_RICE_XRESOURCES" ] && \      # merge Xresources from rice dir
+  xrdb -merge "$QDOTS_RICE_XRESOURCES"
 setxkbmap -layout pl &                    # Polish keyboard layout
 wallpaper-set &		                        # set wallpaper
 dwmblocks &                               # status bar
 xcompmgr &		                            # for transparency
-xrdb $HOME/.Xresources &	                # Xresources for colors/settings
-[ -f "$QDOTS_RICE_XRESOURCES" ] && \      # merge Xresources from rice dir
-  xrdb -merge "$QDOTS_RICE_XRESOURCES"
 unclutter &		                            # remove mouse when idle
 
