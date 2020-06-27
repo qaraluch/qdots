@@ -1,0 +1,28 @@
+{
+  // coc-yank
+  // https://github.com/neoclide/coc-yank
+  "yank.highlight.duraion": 1000,
+  "suggest.autoTrigger": "none",
+  // coc-snippets
+  // https://github.com/neoclide/coc-snippets
+  "snippets.userSnippetsDirectory": "$HOME/.config/nvim/ultisnips",
+  "snippets.extends": {
+    "typescript": ["javascript"]
+  },
+  // coc-prettier
+  // https://github.com/neoclide/coc-prettier
+  "coc.preferences.formatOnSaveFiletypes": ["markdown"],
+  // coc-tsserver
+  // https://github.com/neoclide/coc-tsserver
+  // "tsserver.trace.server": "verbose",
+  // "tsserver.log": "verbose",
+  // open tsserver log file by command :CocCommand tsserver.openTsServerLog
+  // open tsserver output channel by command :CocCommand workspace.showOutput tsserver
+  // CommonJS module msg turn off:
+  "javascript.suggestionActions.enabled": false,
+  // coc
+  "diagnostic.errorSign": "X",
+  "diagnostic.warningSign": "!",
+  "diagnostic.infoSign": "i",
+  "diagnostic.hintSign": "i"
+}

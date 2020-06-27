@@ -28,16 +28,16 @@ endif
 call plug#begin('~/.cache/vim/plugged')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     "TODO: change for system binary file
 Plug 'junegunn/fzf.vim'                                 "https://github.com/junegunn/fzf.vim
-" Plug 'mileszs/ack.vim'																"https://github.com/mileszs/ack.vim
 Plug 'dyng/ctrlsf.vim'																	"https://github.com/dyng/ctrlsf.vim
 Plug 'tpope/vim-commentary'                             "https://github.com/tpope/vim-commentary
 Plug 'sheerun/vim-polyglot'				                      "https://github.com/sheerun/vim-polyglot
-" Plug 'arcticicestudio/nord-vim' 			                "https://github.com/arcticicestudio/nord-vim
 Plug 'dracula/vim', { 'as': 'dracula' }			            "https://github.com/dracula/vim
-Plug 'airblade/vim-gitgutter'                           "https://github.com/airblade/vim-gitgutter
-Plug 'w0rp/ale'																					"https://github.com/dense-analysis/ale
 Plug 'tpope/vim-surround'																"https://github.com/tpope/vim-surround
 Plug 'itchyny/lightline.vim'                            "https://github.com/itchyny/lightline.vim
+Plug 'neoclide/coc.nvim', {'branch': 'release'}         "https://github.com/neoclide/coc.nvim
+Plug 'airblade/vim-gitgutter'                           "https://github.com/airblade/vim-gitgutter
+" Plug 'arcticicestudio/nord-vim' 			                  "https://github.com/arcticicestudio/nord-vim
+" Plug 'mileszs/ack.vim'																  "https://github.com/mileszs/ack.vim
 call plug#end()
 
 "" Plug commands:
@@ -50,18 +50,16 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  GENERAL
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Leader key
+"" Leader key (\)
 " No need for leader key!
 " Disadvantage is that it is also used in insert mode,
 " so it cause lag effect
 " Use default one: \
 " - for special, not common command
 " Used mental leader key: <Space>
-" - for common command like ???
-" Used mental leader key: ,
-" - for ???
+" - for common edit commands
 " Used mental leader key: '
-" - for ???
+" - for buffer and window navigation
 " change leader key example (for reference):
 " let mapleader=","
 
@@ -148,6 +146,7 @@ set number relativenumber
 
 "" Timeout
 " default settings for reference
+" TO IMPROVE: some mappings no timeouts like [, y, d etc... ?
 set timeout timeoutlen=1000
 
 "" Split settings
@@ -170,6 +169,36 @@ set pastetoggle=<leader>p
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  MOVEMENTS & SEARCH
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Windows navigation
+" instead of <C-w>
+" split vertically
+nnoremap 'v :wincmd v<CR>
+" full size
+nnoremap 'o :wincmd o<CR>
+" top left
+nnoremap 'w :wincmd w<CR>
+" left
+nnoremap 'a :wincmd h<CR>
+" up
+nnoremap 's :wincmd j<CR>
+" down
+nnoremap 'd :wincmd k<CR>
+" left
+nnoremap 'f :wincmd l<CR>
+" swap
+nnoremap 'x :wincmd x<CR>
+
+"" [Plugin] Vim-markdown
+" https://github.com/plasticboy/vim-markdown
+" it is installed through vim-polyglot plugin
+" maps for reference:
+" ]]: go to next header. <Plug>Markdown_MoveToNextHeader
+" [[: go to previous header.
+" remaps:
+" collision with quickfix maps (]c)
+nmap [h <Plug>Markdown_MoveToCurHeader
+nmap [p <Plug>Markdown_MoveToParentHeader
+
 "" [Plugin] fzf.vim
 " https://github.com/junegunn/fzf.vim
 " Go to the buffer
@@ -247,8 +276,8 @@ nnoremap <Space>bd :bd<CR>
 " use: :bufdo :bd<CR>
 
 " Buffer navigation commands
-nnoremap <silent> <Space>] :bnext<CR>
-nnoremap <silent> <Space>[ :bprevious<CR>
+nnoremap '] :bnext<CR>
+nnoremap '[ :bprevious<CR>
 "commands for reference
 "nnoremap <silent> [B :bfirst<CR>
 "nnoremap <silent> ]B :blast<CR>
@@ -282,13 +311,13 @@ noremap <Space>po o<Esc>p
 
 "" Delete action without register
 " it uses black hole register
-noremap <Space>d "_d
+noremap <leader>d "_d
 
 "" Erase line - not removing
 nnoremap <Space>C cc<Esc>
 
 "" Yank line but without new line
-nnoremap <Space>y ^y$
+nnoremap <leader>y ^y$
 
 "" Add space char before cursor in normal mode
 nnoremap <leader>j i<space><esc><right>
@@ -300,16 +329,23 @@ nnoremap <Space>s *:%s///g<left><left>
 " replace a WORD
 nnoremap <Space>S :%s/<c-r><c-a>//g<left><left>
 
-"" Fast variable rename
+"" Quick search and replace
+" fast variable rename
 " (PV - tip 80)
 " to use with .
 nnoremap <Space>r *Ncgn
 
+"" Quick search and replace in function
+" inside curly braces only
+nnoremap <Space>R :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
+xnoremap <Space>R :<C-u>'{,'}s/<C-r>=functions#GetVisualSelection()<CR>/
+
 "" Move cursor left in insert mode
 " handy with brackets working
-inoremap <leader>; <Esc>la
+inoremap <leader>l <Esc>la
 
 "" Vertically center document when entering Insert mode
+" TODO: nnoremap zz
 " autocmd InsertEnter * execute "normal zz 10\<C-E>"
 "backup: autocmd InsertEnter * norm zz
 
@@ -362,6 +398,23 @@ nmap <C-_> gcc
 " opens  results in new buffer
 command! -nargs=* -complete=shellcmd R
 			\ new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
+
+"" Auto comments mgmt
+" see :h formatoptions
+" default vim's value: formatoptions=jcroql (for js files)
+" some default vim plugins set above option by default
+function! AutoComment()
+  exec ':set formatoptions+=cro'
+  :set formatoptions?
+endfunction
+function! AutoCommentOff()
+  exec ':set formatoptions-=cro'
+  :set formatoptions?
+endfunction
+command! AutoComment call AutoComment()
+command! AutoCommentOff call AutoCommentOff()
+map <leader>cmt :set formatoptions-=cro<CR>
+map <leader>cmtb :set formatoptions+=cro<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  ABBREVIATIONS
@@ -471,7 +524,12 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  FILE & CWD & UTILS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Path for find command
+"" Highlight refresh for large files
+" https://thoughtbot.com/blog/modern-typescript-and-react-development-in-vim#highlighting-for-large-files
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
+
+"" Path for find command and gf
 " for CWD and qnnb
 set path=$PWD/**
 set path+=$qnnbPath/**
@@ -481,16 +539,6 @@ set path+=$qnnbPath/**
 " let g:netrw_browsex_viewer="setsid xdg-open"
 " for WSL
 let g:netrw_browsex_viewer="cmd.exe /C start"
-
-"" [Plugin] Ale
-" https://github.com/dense-analysis/ale
-nmap <silent> [e <Plug>(ale_previous_wrap)
-nmap <silent> ]e <Plug>(ale_next_wrap)
-let g:ale_sign_error = 'X'
-let g:ale_sign_warning = '!'
-let b:ale_fixers = {'javascript': ['eslint']}
-let g:ale_fix_on_save = 1
-nmap <F7> <Plug>(ale_fix)
 
 "" Spellcheck
 nnoremap <F5> :setlocal spell! spelllang=en_us<CR>
@@ -530,7 +578,10 @@ endfunction
 command! Mv call MvFile()
 
 "" Set PWD for current opened file
-nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <leader>cdf :cd %:p:h<CR>:pwd<CR>
+
+"" Check PWD for current opened file
+nnoremap <leader>cd :pwd<CR>
 
 "" Set PWD to the git project
 " or directory of current file if not in git project
@@ -626,6 +677,15 @@ exec 'nnoremap ZO :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " automatically save the current session whenever vim is closed
 autocmd VimLeave * mks! ~/.cache/vim/sessions/quit-session
 
+" Command Abbreviation fn
+" borrowed form: Coc
+" from: https://github.com/neoclide/coc.nvim/wiki/using-the-configuration-file
+function! SetupCommandAbbrs(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  HOW-TO & Q&A
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -645,12 +705,12 @@ autocmd VimLeave * mks! ~/.cache/vim/sessions/quit-session
 "     :set filetype?
 
 "" Q: How to check shortcuts aka map settings in nvim?
-"  To check all shorcuts settings, use:
+"  To check all shortcuts settings, use:
 "     :map
 "     :nmap
 "     :imap
 "     :map gc
-"  To check all shorcuts settings with additional info, use:
+"  To check all shortcuts settings with additional info, use:
 "     :verbose map
 "  see: https://vi.stackexchange.com/questions/7722/how-to-debug-a-mapping
 "  for common pitfalls
@@ -674,17 +734,140 @@ autocmd VimLeave * mks! ~/.cache/vim/sessions/quit-session
 "" Q: How to open couple of files in vertical split from terminal?
 "  To open files in vertical split, run command in the console:
 "     nvim -O file1.md file2.md
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  TEST
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" [Plugin] Coc
+" https://github.com/neoclide/coc.nvim
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  TEST SETTINGS
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" [Plugin] Vim-markdown
-" https://github.com/plasticboy/vim-markdown
-" it is installed through vim-polyglot plugin
-" maps for reference:
-" ]]: go to next header. <Plug>Markdown_MoveToNextHeader
-" [[: go to previous header.
-" remaps:
-" collision with quickfix maps (]c)
-nmap [h <Plug>Markdown_MoveToCurHeader
-nmap [p <Plug>Markdown_MoveToParentHeader
+" Status check commands:
+" :checkhealth
+" :cocinfo
+
+" Config file opens by:
+" opens file: coc-settings.json
+" :CocConfig
+
+" Open Coc config file (:CC)
+call SetupCommandAbbrs('CC', 'CocConfig')
+
+" Not red-highlight comments in the json files
+" for coc config file
+" https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Extension list:
+let g:coc_global_extensions = [
+      \ 'coc-emmet',
+      \ 'coc-snippets',
+      \ 'coc-eslint',
+      \ 'coc-css',
+      \ 'coc-html',
+      \ 'coc-json',
+      \ 'coc-yank',
+      \ 'coc-prettier',
+      \ 'coc-tsserver'
+      \ ]
+" above extensions is installed by default.
+" to manage it, run:
+" :CocList extensions
+
+" Coc completion setup:
+" trigger completion and navigate to the next complete item
+" https://github.com/neoclide/coc.nvim/wiki/Completion-with-sources
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <silent><expr> <C-n> coc#refresh()
+
+" use <Tab> and <S-Tab> to navigate the completion list:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" use <CR> to confirm completion
+" you have to remap <CR> to make sure it confirm completion when pum is visible.
+" <C-g>u is used to break undo level
+" To make <cr> select the first completion item and confirm the completion when no item has been selected:
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+
+" Coc intelisense
+" goto code navigation
+nmap <Space>td <Plug>(coc-definition)
+nmap <Space>ti <Plug>(coc-implementation)
+nmap <Space>tf <Plug>(coc-references)
+
+" symbol renaming.
+nmap <Space>tr <Plug>(coc-rename)
+
+" Change dir path for plugin installations etc.
+" default ~/.config/coc
+let g:coc_data_home = '~/.cache/coc'
+
+" [Plugin] coc-prettier
+" https://github.com/neoclide/coc-prettier
+" to save without formatting, use :noa w
+
+" prettier file command (:priettier and :p)
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+call SetupCommandAbbrs('P', 'Prettier')
+nnoremap <leader>pr :Prettier<CR>
+
+" [Plugin] coc-eslint
+" https://github.com/neoclide/coc-eslint
+" navigate diagnostics
+nmap <silent> [e <Plug>(coc-diagnostic-prev)
+nmap <silent> ]e <Plug>(coc-diagnostic-next)
+
+" apply CodeAction to the current line
+nmap <Space>h <Plug>(coc-codeaction)
+
+" apply AutoFix to problem on the current line.
+nmap <Space>g <Plug>(coc-fix-current)
+
+" [Plugin] coc-snippets
+" https://github.com/neoclide/coc-snippets
+" expand and jump
+let g:coc_snippet_next = '<Tab>'
+imap <C-k> <Plug>(coc-snippets-expand-jump)
+
+" edit snippet file for current filetype
+nnoremap <leader>es :CocCommand snippets.editSnippets<CR>
+
+" [Plugin] coc-yank
+" https://github.com/neoclide/coc-yank
+" change color for plugin's highlight
+" TODO: fix it, not working
+" hi HighlightedyankRegion term=bold ctermbg=0 guibg=#13354A
+
+" open yank list
+nnoremap <silent> <Space>y  :<C-u>CocList -A --normal yank<cr>
+
+" General vim settings recommended in coc readme
+" TODO: move to general settings
+" from https://github.com/neoclide/coc.nvim#example-vim-configuration
+" textedit might fail if hidden is not set.
+" set hidden
+" when set hidden on - movig buffers behave strange
+" how it behaves when using coc?
+
+" some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" give more space for displaying messages.
+set cmdheight=2
+
+" don't pass messages to |ins-completion-menu|. (?)
+set shortmess+=c
+
+" always show the signcolumn,
+" otherwise it would shift the text each time
+" diagnostics appear/become resolved. (?)
+set signcolumn=yes
+
