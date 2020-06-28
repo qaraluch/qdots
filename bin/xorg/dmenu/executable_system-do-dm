@@ -1,0 +1,51 @@
+#!/bin/bash
+# system-do script
+# for executing common system tasks
+# in dmenu
+# borrow from Luke
+# credits to: LukeSmithxyz/voidrice - ./local/bin/sysact
+# Warn: All commands no need sudo cuz it is set up in sudoers file
+
+# leave dwm	kill -TERM $(pidof -s dwm)
+# renew dwm	kill -HUP $(pidof -s dwm)
+# hibernate ${hib:-sudo -A systemctl suspend-then-hibernate}
+
+readonly cmds="\
+hibernate,hibernate_exec
+reboot,reboot_exec
+shutdown,shutdown_exec
+update,update_exec
+lock,lock_exec
+logout,logout_exec
+"
+
+update_exec() {
+  $($TERMINAL update-this)
+  # see script in bin/
+}
+
+reboot_exec() {
+  reboot
+  # no need sudo cuz it is set up in sudoers file
+}
+
+shutdown_exec() {
+  shutdown -h now
+  # no need sudo cuz it is set up in sudoers file
+}
+
+hibernate_exec() {
+  systemctl suspend-then-hibernate
+}
+
+lock_exec() {
+  betterlockscreen --lock --off 300
+}
+
+logout_exec() {
+  sudo pkill X
+  # -A flag uses askpass
+}
+
+readonly choice="$(echo "$cmds" | cut -d',' -f 1 | dmenu)" || exit 1
+$(echo "$cmds" | grep "^$choice" | cut -d',' -f2-)
