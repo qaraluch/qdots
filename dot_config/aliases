@@ -86,6 +86,8 @@ alias llt='ls-long-time'
 alias lou='locate-update-db'
 alias lor='locate-remove-db'
 
+alias nb='newsboat'
+
 alias reload='zsh-reload'
 
 alias take='mkdir-and-cd'
