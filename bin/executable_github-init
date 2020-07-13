@@ -59,10 +59,9 @@ initNewGitHubRepo() {
 
 addNewURLtoRemoteOrigin() {
   _yesConfirmOrAbort 'Do you want add GitHub remote to the repo?'
-  local localGitRemote=$(git remote get-url origin);
-  git remote set-url --add --push origin "${localGitRemote}"
-  git remote set-url --add --push origin "${repoURL}"
+  git remote add origin "${repoURL}"
   git remote -v
+  git push --set-upstream origin master
   _echoDone
 }
 
