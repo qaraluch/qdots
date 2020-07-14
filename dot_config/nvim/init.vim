@@ -325,7 +325,8 @@ nnoremap <leader>j i<space><esc><right>
 "" Substitute edits
 " replace a word
 " use 'c' flag to confirm each change
-nnoremap <Space>s *:%s///g<left><left>
+nnoremap <Space>s *N:%s///g<left><left>
+
 " replace a WORD
 nnoremap <Space>S :%s/<c-r><c-a>//g<left><left>
 
