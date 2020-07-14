@@ -72,3 +72,8 @@ export GREP_COLOR="1;32"                # better grep color from Arch Wiki
 # Partial line symbol show setup
 PROMPT_EOL_MARK='-end-'
 
+# Disabling flow control
+# ctrl+s ctrl+q
+#:help ctrl-s
+setopt noflowcontrol
+
