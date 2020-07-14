@@ -11,7 +11,7 @@
   },
   // coc-prettier
   // https://github.com/neoclide/coc-prettier
-  "coc.preferences.formatOnSaveFiletypes": ["markdown"],
+  "coc.preferences.formatOnSaveFiletypes": ["markdown", "javascript"],
   // coc-tsserver
   // https://github.com/neoclide/coc-tsserver
   // "tsserver.trace.server": "verbose",
