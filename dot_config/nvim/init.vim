@@ -585,7 +585,7 @@ nnoremap <leader>cdf :cd %:p:h<CR>:pwd<CR>
 nnoremap <leader>cd :pwd<CR>
 
 "" Step up PWD to parent's dir
-+nnoremap <leader>cdd :cd..<CR>:pwd<CR>
+nnoremap <leader>cdd :cd..<CR>:pwd<CR>
 
 "" Set PWD to the git project
 " or directory of current file if not in git project

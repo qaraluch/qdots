@@ -1,9 +1,6 @@
 # Zshrc config file.
 # Do not change the order of execution!
 
-# Qdots settings
-export QDOTS_USER_PROMPT={{ .qdotsprompt }}
-
 # Tmux autostart
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   exec tmux

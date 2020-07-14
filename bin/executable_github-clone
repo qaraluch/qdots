@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 07.2019 - MIT
+# Automate git clone command to the user's dir.
+# DONE: added support for qdots global vars for reposDir and defaultUserName
+# TODO: support long urls too
+# TODO: support different target dir -t
+# TODO: user's repo is cloned to the main dir for convenience
+
+readonly _pDel='[ github-clone ]'
+readonly _pArgs="$@"
+readonly _pName=$(basename $0)
+
+readonly reposDir_fallBack="${HOME}/repos"
+# fallback for defaultUserName is simply $USERNAME
+
+printUsage() {
+  cat <<EOL
+
+  Help:
+  ---------
+  ${_cy}${_pName}${_ce} - execute git clone command to the user's dir.
+
+  Usage:
+    ${_pName} ${_cy}<github-short-url>${_ce}              - (default) clone repo
+                                                      to the dir:
+                                                      <user's-repos>/<owner>/<repo-name>
+                                                      For convenient when repo's owner is the same as <defaultUserName>
+                                                      target dir is:
+                                                      <user's-repos>/<repo-name>
+
+                                                      example: github-clone qaraluch/newsboat-urls
+
+                                                      uses shell variables:
+                                                      QDOTS_USER_GITUSER, QDOTS_USER_REPOS
+                                                      (qdots vars) for setup <defaultUserName> and <reposDir>
+
+EOL
+  exit ${1:-1}
+}
+
+# Utils:
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+
+_isStringEqualY() {
+  local string=$1
+  [[ "$string" == "Y" ]]
+}
+
+_isStringEmpty() {
+  local var=$1
+  [[ -z $var ]]
+}
+
+# CLI
+parseOptions(){
+  while [[ $# -gt 0 ]] ; do
+    flag="$1"
+    case $flag in
+      -h|--help)
+      printUsage
+      ;;
+      *)
+      positional+=("$1")
+      shift
+      ;;
+    esac
+  done
+}
+
+main() {
+  local positional=()
+  parseOptions $_pArgs
+  set -- "${positional[@]}"
+
+  setupFinalReposDir
+  setupFinalDefaultUserName
+
+  local shortUrl="$1"
+  local ownerIsDefaultUser
+  local host="https://github.com/"
+  local owner=$(echo "${shortUrl}" | awk -F'/' '{print $1}')
+  local repoName=$(echo "${shortUrl}" | awk -F'/' '{print $2}')
+  local destDir="${reposDir}/${owner}/${repoName}"
+  local destDirDefaultUser="${reposDir}/${repoName}"
+
+  checkOwnerIsUser
+  banner
+  checkURL
+
+
+  cloneRepo
+  _echoDone
+}
+
+setupFinalReposDir() {
+ if _isStringEmpty "$QDOTS_USER_REPOS" ; then
+   reposDir="$reposDir_fallBack"
+ else
+   reposDir="$QDOTS_USER_REPOS"
+ fi
+}
+
+setupFinalDefaultUserName() {
+ if _isStringEmpty "$QDOTS_USER_GITUSER" ; then
+   defaultUserName="$USERNAME"
+ else
+   defaultUserName="$QDOTS_USER_GITUSER"
+ fi
+}
+
+banner() {
+  _echoIt "About to clone github repo:"
+  _echoIt "   - ${_cy}${shortUrl}${_ce}"
+  if _isStringEqualY "${ownerIsDefaultUser}"; then
+    _echoIt "to dir:   ${reposDir}/${_cy}${repoName}${_ce}"
+  else
+    _echoIt "to dir:   ${reposDir}/${owner}/${_cy}${repoName}${_ce}"
+  fi
+}
+
+checkURL() {
+  if [[ "${shortUrl}" == *'https://github.com'* ]]; then
+    _errorExit "Please pass short version of the url like: <repo-owner>/<repo-name> Abort!"
+  fi
+}
+
+checkOwnerIsUser() {
+  if [[ "${owner}" == "${defaultUserName}" ]]; then
+    ownerIsDefaultUser='Y'
+  fi
+}
+
+cloneRepo() {
+  if _isStringEqualY "${ownerIsDefaultUser}"; then
+    git clone "${host}${owner}/${repoName}.git" "${destDirDefaultUser}"
+  else
+    git clone "${host}${owner}/${repoName}.git" "${destDir}"
+  fi
+}
+
+main
