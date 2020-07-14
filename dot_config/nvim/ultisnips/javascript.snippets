@@ -33,15 +33,93 @@ console.log($0)
 endsnippet
 
 snippet cld "console.log debug"
-console.log("$1$0 ---->", $1});
+console.log("$1$0 ---->", $1);
 endsnippet
 
-snippet ar "Arrow function" i
+snippet af "Arrow function" i
 ($1) => { $2 }
 endsnippet
 
-snippet fun
+snippet fun "Function"
 function ${1:name}(${2}) {
 	return ${3:results};
 }
 endsnippet
+
+snippet afun "async Function"
+async function ${1:name}(${2}) {
+	const results = await ${3:results};
+	return results;
+}
+endsnippet
+
+snippet mode "module.exports"
+module.exports = $1;
+endsnippet
+
+snippet she "#!/usr/bin/env node" b
+#!/usr/bin/env node
+endsnippet
+
+snippet req "assign a CommonJS-style module to a var"
+const ${0:${1/(.+\/)*(\w+)(-|\b|$)(\..+$)?/\u$2/g}} = require("$1");
+endsnippet
+
+snippet if "if (condition) { ... }"
+if (${1:true}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet try "try"
+try  {
+	${VISUAL}$0
+} catch (error) {
+	${1:console.error(error)}
+}
+endsnippet
+
+snippet eif "esle if (condition) { ... }"
+else if (${1:true}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet rer "Return results statement"
+	const results = ${VISUAL}$0;
+	return results;
+endsnippet
+
+snippet re "Return statement"
+	return ${VISUAL}$0;
+endsnippet
+
+## Jest
+snippet exp "Jest - expect(value)"
+expect($1)$2;
+endsnippet
+
+snippet expbe "Jest - expect(value).toBe(value)"
+expect($1).toBe($2);
+endsnippet
+
+snippet expeq "Jest - expect(value).toEqual(value)"
+expect($1).toEqual($2);
+endsnippet
+
+snippet des "Jest - describe(name, fn)"
+describe("$1", () => {
+	${VISUAL}$0
+});
+endsnippet
+
+snippet it "Jest - alias for test()"
+it("$1", () => {
+	$2
+});
+endsnippet
+
+snippet expoc "Jest - expect.objectContaining()"
+expect.objectContaining({ $1 }),
+endsnippet
+

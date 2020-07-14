@@ -1,5 +1,6 @@
 !! Transparency (0-1):
-*.alpha: 0.8
+*.alpha: 0.92
+st.alphaUnfocussed: 0.7
 
 !! Set a default font and font size
 *.font: monospace:size=10

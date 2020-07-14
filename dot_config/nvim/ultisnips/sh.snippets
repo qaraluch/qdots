@@ -29,3 +29,56 @@ snippet she "she bang bash" b
 # Author: qaraluch - ${1}.2020 - MIT
 # $0
 endsnippet
+
+snippet to "TODO" b
+# TODO: $0
+endsnippet
+
+snippet if "if ... then (if)"
+if ${2:[[ ${1:condition} ]]}; then
+	${0:${VISUAL}}
+fi
+endsnippet
+
+snippet fun "function" b
+${1:name}() {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet elif "elif"
+elif ${2:[[ ${1:condition} ]]}; then
+${0:${VISUAL}}
+endsnippet
+
+snippet lo "variable local"
+local ${1:name}="${2:something}"$0
+endsnippet
+
+snippet loe "variable local empty"
+local ${1:name}$0
+endsnippet
+
+snippet re "variable readonly"
+readonly ${1:name}="${2:something}"$0
+endsnippet
+
+snippet v "string variable"
+${${0:name}}
+endsnippet
+
+snippet vq "string variable quoted"
+"${${0:name}}"
+endsnippet
+
+snippet cmds "command substitution"
+$(${0:cat })
+endsnippet
+
+snippet ed "echo debug"
+echo "${1:name} ---->" "$$1"${0}
+endsnippet
+
+snippet clry "color yellow"
+$\{_cy\}${1:var}$\{_ce\}
+endsnippet
