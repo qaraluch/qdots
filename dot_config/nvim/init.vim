@@ -584,6 +584,9 @@ nnoremap <leader>cdf :cd %:p:h<CR>:pwd<CR>
 "" Check PWD for current opened file
 nnoremap <leader>cd :pwd<CR>
 
+"" Step up PWD to parent's dir
++nnoremap <leader>cdd :cd..<CR>:pwd<CR>
+
 "" Set PWD to the git project
 " or directory of current file if not in git project
 " see:  http://inlehmansterms.net/2014/09/04/sane-vim-working-directories/
