@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 07.2018 - MIT
+
+readonly PROG_NAME=$(basename $0)
+readonly ARGS="$@"
+
+printUsage() {
+  cat <<EOL
+${PROG_NAME} - Execute multiple commands from file.
+
+Usage:
+    ${PROG_NAME} commands.txt
+EOL
+  exit $1
+}
+
+parseOptions(){
+    while [[ $# -gt 0 ]]
+    do
+    key="$1"
+    case $key in
+        -h|--help)
+        printUsage 1
+        ;;
+        *)                  # unknown option
+        POSITIONAL+=("$1") 
+        shift 
+        ;;
+    esac
+    done
+}
+
+isEmpty() {
+    local var=$1
+    [[ -z $var ]]
+}
+
+ifNoArgsPrintUsage(){
+  isEmpty $1 \
+      && printUsage 1
+}
+
+main() {
+    # var default
+    local POSITIONAL=()
+    ifNoArgsPrintUsage $ARGS
+    parseOptions $ARGS
+    set -- "${POSITIONAL[@]}"
+    local CMDSFILE=$1
+    # echo CMDSFILE = "${CMDSFILE}"
+    xargs -0 -n 1 bash -c < <(tr \\n \\0 < $CMDSFILE)
+}
+
+main
