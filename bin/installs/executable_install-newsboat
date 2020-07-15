@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+# installation script for:
+# newsboat RSS client
+# Author: qaraluch - 07.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
+_msgNotInstalled() {
+  _echoIt "It seems that package: ${_cy}$1${_ce} not installed! Intalling... " "${_iw}"
+}
+_msgInstalled() {
+  _echoIt "Package: ${_cy}$1${_ce} already installed! Nothing to do." "${_iw}"
+}
+_isNotFile() {
+  local file=$1
+  [[ ! -f $file ]]
+}
+_isInstalledOnArch() {
+  local package
+  package="$1"
+  local check
+  check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+  if [ -n "${check}" ] ; then
+    echo 'true'
+  else
+    echo 'false'
+  fi;
+}
+
+
+# Vars
+readonly listsRepo="${HOME}/lists"
+readonly urlsFile="${HOME}/lists/newsboat/urls"
+readonly urlsScriptFile="${HOME}/lists/newsboat/urls-setup.sh"
+
+# Main
+readonly explainationInstall=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  installation script for:
+  ${_cy}newsboat${_ce} RSS client
+  for Arch Linux
+  1. check or clone lists repo for urls file availability
+  2. install package from official Arch repo
+  3. setup urls file (usage of external script)
+EOL
+)
+
+readonly explainationUpdate=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  update script for:
+  ${_cy}newsboat${_ce} RSS client
+  for Arch Linux
+  1. check or clone lists repo for urls file availability
+  2. pull changes from repo
+  3. setup urls file (usage of external script)
+EOL
+)
+
+main() {
+  echo "${explainationInstall}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    checkUrlsList
+    installPackage 'newsboat'
+    runSetupScript
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+  echo "${explainationUpdate}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    checkUrlsList
+    pullChanges
+    runSetupScript
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+checkUrlsList() {
+  if _isNotFile "${urlsFile}" ; then
+    _echoIt "Did not found urls file? ..."
+    _echoIt "Try to clone it by run: install-lists"
+    install-lists
+  fi
+}
+
+installPackage() {
+  local package
+  package=${1}
+  local isPackageInstalled
+  isPackageInstalled=$(_isInstalledOnArch "${package}")
+  if [ "${isPackageInstalled}" = 'true' ] ; then
+    _msgInstalled "${package}"
+  else
+    _msgNotInstalled "${package}"
+    sudo pacman -S --noconfirm "${package}"
+  fi
+}
+
+pullChanges() {
+  _echoIt "About to pull changes for urls file ..."
+  _echoIt "  ... in the repo: ${_cy}${listsRepo}${_ce}"
+  cd "${listsRepo}"
+  git pull
+}
+
+
+runSetupScript() {
+  _echoIt "About to symlink urls file to .config dir ..."
+  /usr/bin/bash "${urlsScriptFile}"
+}
+
+main
