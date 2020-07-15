@@ -2,7 +2,7 @@
 # installation script for:
 # ricing linux environment
 # Author: qaraluch - 04.2020
-# see: .zshrc for env variables
+# see: .zprofile for env variables
 
 # Utils:
 readonly _pName=$(basename "$0")

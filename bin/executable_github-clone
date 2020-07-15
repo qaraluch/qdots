@@ -3,7 +3,6 @@
 # Automate git clone command to the user's dir.
 # DONE: added support for qdots global vars for reposDir and defaultUserName
 # TODO: support long urls too
-# TODO: support different target dir -t
 # TODO: user's repo is cloned to the main dir for convenience
 
 readonly _pDel='[ github-clone ]'
@@ -33,6 +32,9 @@ printUsage() {
                                                       uses shell variables:
                                                       QDOTS_USER_GITUSER, QDOTS_USER_REPOS
                                                       (qdots vars) for setup <defaultUserName> and <reposDir>
+
+  Tips:
+  1. Not supported different target dirs. In this case use simply git clone command.
 
 EOL
   exit ${1:-1}
