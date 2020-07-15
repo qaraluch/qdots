@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# installation script for:
+# git clone qnnb repo
+# Author: qaraluch - 07.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
+_msgNotInstalled() {
+  _echoIt "It seems that package: ${_cy}$1${_ce} not installed! Intalling... " "${_iw}"
+}
+_msgInstalled() {
+  _echoIt "Package: ${_cy}$1${_ce} already installed! Nothing to do." "${_iw}"
+}
+
+# Vars
+readonly repoPath="https://github.com/qaraluch/qnnb.git"
+readonly destPath="${HOME}/qnnb"
+
+# Main
+readonly explaination=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  installation script for:
+  clone ${_cy}qnnb${_ce} repo
+  from: GitHub
+  this script will:
+  1. remove old version
+  2. clone fresh version from GitHub
+EOL
+)
+
+main() {
+  echo "${explaination}"
+  _echoIt "It will remove old version in dir: ${_cy}${destPath}${_ce}" "${_iw}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    remove
+    clone
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+remove() {
+  rm -rf "${destPath}"
+}
+
+clone() {
+  git clone "${repoPath}" "${destPath}"
+}
+
+main
