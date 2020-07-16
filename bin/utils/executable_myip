@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 07.2020 - MIT
+# Check my public ip address by usage of dig
+# Check local machine ip address
+# Warn: dig is not installed by qdots yet
+# when missing install it:
+# sudo pacman -S bind-tools
+
+readonly _pName=$(basename $0)
+
+printUsage() {
+  cat <<EOL
+
+  Help:
+  ---------
+  ${_pName} - check my ip
+
+  Usage:
+    ${_pName}                   - default, shows local ip address
+    ${_pName} --public / -p     - shows public ip address
+
+EOL
+  exit ${1:-1}
+}
+
+
+# CLI
+parseOptions(){
+  while [[ $# -gt 0 ]] ; do
+    flag="$1"
+    case $flag in
+      -h|--help)
+      printUsage
+      ;;
+      -p|--public)
+      publicFlag='Y'
+      shift
+      ;;
+      *)
+      positional+=("$1")
+      shift
+      ;;
+    esac
+  done
+}
+
+main() {
+  local flag
+  local publicFlag
+  # local positional=()
+  parseOptions "$@"
+  # set -- "${positional[@]}"
+  if _isStringEqualY "${publicFlag}"; then
+    getPublicIp
+  else
+    getLocalIp
+  fi
+}
+
+_isStringEqualY() {
+  local string=$1
+  [[ "$string" == "Y" ]]
+}
+
+getPublicIp() {
+  dig +short myip.opendns.com @resolver1.opendns.com -4
+}
+
+getLocalIp() {
+  hostname -i # on Arch
+  # hostname -I | awk '{print $2}' # on WSL ubuntu
+}
+
+main "$@"
