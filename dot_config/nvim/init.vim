@@ -554,6 +554,10 @@ nnoremap <leader>q :q!<CR>
 " use instead: jk + <Space>f
 " inoremap <Space>f <Esc>:w<CR>
 
+" Allow saving of files as sudo when I forgot to start vim using sudo
+command Sw :execute ':silent w !sudo tee % > /dev/null' | :edit!
+" cmap w!! w !sudo tee > /dev/null %
+
 "" Automatically deletes all trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
