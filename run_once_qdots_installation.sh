@@ -10,7 +10,7 @@
 readonly AUR_HELPER='yay'               # installed by QALACS script (arch-bootstrap repo)
 
 # shell essentials installation
-readonly essentialsPackagesToInstall=(
+readonly essentialPackagesToInstall=(
   'fzf'                                 # [tool] command-line fuzzy finder
                                         #        need for: zsh, nvim, locate, qdots
   'the_silver_searcher'                 # [tool] alternative to grep
@@ -31,6 +31,10 @@ readonly essentialsPackagesToInstall=(
                                         #       also for javascript dev
   'npm'                                 # [dev] node.js package manager
                                         #       for javascript dev
+)
+
+readonly essentialPackagesToInstallAUR=(
+  'tmuxinator'                          # [tool] session manager for tmux
 )
 
 # windows manager installations
@@ -147,11 +151,14 @@ builds() {
 }
 
 main() {
-  _echoIt "${_QDel}" "About to install ${_Qcy}qdots essentials${_Qce} packages... " "${_Qiw}"
+  _echoIt "${_QDel}" "About to install ${_Qcy}qdots essential${_Qce} packages... " "${_Qiw}"
   _yesConfirmOrSkip
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    for pkg in "${essentialsPackagesToInstall[@]}" ; do
+    for pkg in "${essentialPackagesToInstall[@]}" ; do
       installPackage "$pkg"
+    done
+    for pkg in "${essentialPackagesToInstallAUR[@]}" ; do
+      installPackageAUR "$pkg"
     done
   else
     _echoIt "${_QDel}" "... Skipped!" "${_Qic}"

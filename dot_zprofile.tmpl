@@ -9,6 +9,9 @@ export BROWSER='brave'
 export TERMINAL='st'
 export SUDO_ASKPASS="${HOME}/bin/xorg/dmenu/askpass-dm"
 
+# Tmuxinator project config files placed in lists
+[[ -d ${HOME}/lists/tmuxinator ]] && export TMUXINATOR_CONFIG="${HOME}/lists/tmuxinator"
+
 # Qdots vars
 # wallpaper vars can not be in .zshrc
 # other placed here for consistency

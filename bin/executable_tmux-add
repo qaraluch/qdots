@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 07.2020 - MIT
+# Add new window to the tmux session
+# based on fzf-marks entries
+
+readonly _pName=$(basename $0)
+
+IFS=$'\n' readonly fzfMarksEntry=("$(cat ${FZF_MARKS_FILE} | fzf-tmux --exit-0)")
+
+readonly name=$(awk -F':' '{print $1}' <<< "$fzfMarksEntry" | sed 's/[ \t]\?//g')
+readonly path=$(awk -F':' '{print $2}' <<< "$fzfMarksEntry" | sed 's/[ \t]\?//g')
+
+if [[ -d "$path" ]]; then
+  tmux new-window -d -n "${name}" -c "${path}"
+else
+  echo "[ ${_pName} ] Destination dir for new tmux window seems not exist... :o"
+fi

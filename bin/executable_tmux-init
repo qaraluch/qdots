@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 07.2020 - MIT
+# Init first session for tmux start
+
+tmux new-session -n shell

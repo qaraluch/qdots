@@ -89,7 +89,12 @@ alias lor='locate-remove-db'
 
 alias nb='newsboat'
 
+alias mux='tmuxinator'
+
 alias reload='zsh-reload'
+
+# see: ~/bin
+alias ta='tmux-add'
 
 alias take='mkdir-and-cd'
 

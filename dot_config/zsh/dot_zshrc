@@ -3,7 +3,7 @@
 
 # Tmux autostart
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
+  exec tmux-init # see: ~/bin
 fi
 
 # Source qdots functions
@@ -62,7 +62,7 @@ ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='fg=yellow'
 export KEYTIMEOUT=20
 
 # Fzf-marks configuration
-FZF_MARKS_FILE=${QDOTS_ZSH_LOCALSHARE_DIR}/fzf-marks
+export FZF_MARKS_FILE=${QDOTS_ZSH_LOCALSHARE_DIR}/fzf-marks
 
 # Zshell options
 [ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-options" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-options"
