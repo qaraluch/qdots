@@ -11,6 +11,7 @@ readonly AUR_HELPER='yay'               # installed by QALACS script (arch-boots
 
 # shell essentials installation
 readonly essentialPackagesToInstall=(
+  'openssh'                             # [tool] secure shell
   'fzf'                                 # [tool] command-line fuzzy finder
                                         #        need for: zsh, nvim, locate, qdots
   'the_silver_searcher'                 # [tool] alternative to grep

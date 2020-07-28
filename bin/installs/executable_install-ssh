@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# installation script for:
+# installation / configuration ssh demoan and client
+# Author: qaraluch - 07.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
+_msgNotInstalled() {
+  _echoIt "It seems that package: ${_cy}$1${_ce} not installed! Intalling... " "${_iw}"
+}
+_msgInstalled() {
+  _echoIt "Package: ${_cy}$1${_ce} already installed! Nothing to do." "${_iw}"
+}
+_isNotFile() {
+  local file=$1
+  [[ ! -f $file ]]
+}
+_isInstalledOnArch() {
+  local package
+  package="$1"
+  local check
+  check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+  if [ -n "${check}" ] ; then
+    echo 'true'
+  else
+    echo 'false'
+  fi;
+}
+
+# Vars
+readonly configFile="${HOME}/lists/ssh/config.default"
+readonly sshdConfigFile="${HOME}/lists/ssh/sshd/sshd_config.default"
+
+# Main
+readonly explainationInstall=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  installation script for:
+  ${_cy}ssh${_ce}
+  for Arch Linux
+  1. check or clone lists repo for urls file availability
+  2. install openSSH from official repo
+  3. setup dirs and copy default config files from lists repo
+EOL
+)
+
+main() {
+  echo "${explainationInstall}"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    installPackage 'openssh'
+    checkConfigFileExists
+    runSetupScript
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+checkConfigFileExists() {
+  if _isNotFile "${configFile}" ; then
+    _echoIt "Did not found default config file in the lists repo? ..."
+    _echoIt "Try to clone it by run: install-lists"
+    install-lists
+  fi
+}
+
+installPackage() {
+  local package
+  package=${1}
+  local isPackageInstalled
+  isPackageInstalled=$(_isInstalledOnArch "${package}")
+  if [ "${isPackageInstalled}" = 'true' ] ; then
+    _msgInstalled "${package}"
+  else
+    _msgNotInstalled "${package}"
+    sudo pacman -S --noconfirm "${package}"
+  fi
+}
+
+runSetupScript() {
+  _echoIt "About to create dir .shh in the home dir"
+  mkdir "${HOME}/.ssh"
+  chmod 0700 "${HOME}/.ssh"
+  _echoIt "About to copy default client config file to .ssh dir"
+  cp -vf "${configFile}"  "${HOME}/.ssh/config"
+  chmod 600 "${HOME}/.ssh/config"
+  _echoIt "About to copy deamon config file..."
+  if _isNotFile  '/etc/ssh/sshd_config.org'; then
+    _echoIt "About to make backup copy to the file: /etc/ssh/sshd_config.org"
+    sudo cp -vf '/etc/ssh/sshd_config' '/etc/ssh/sshd_config.org'
+  fi
+  _echoIt "About to copy default deamon sshd_config file to /etc/ssh dir"
+  sudo cp -vf "${sshdConfigFile}" '/etc/ssh/sshd_config'
+}
+
+main
