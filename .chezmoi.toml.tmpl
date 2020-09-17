@@ -1,3 +1,4 @@
+{{- $isitdesktop := promptString "Type 'yes' if you want install Xorgs and desktop apps [yes, no]:" -}}
 {{- $email := promptString "Enter email address (for git):" -}}
 {{- $gituser := promptString "Enter git user name:" -}}
 {{- $qdotsprompt := promptString "Choose qdots prompt type [wsl, simple]:" -}}
@@ -5,4 +6,5 @@
 	email = "{{ $email }}"
 	gituser = "{{ $gituser }}"
 	qdotsprompt = "{{ $qdotsprompt }}"
+	isitdesktop = "{{ $isitdesktop }}"
 

@@ -113,6 +113,9 @@ _yesConfirmOrSkip() {
   echo >&2
   REPLY=${REPLY:-'Y'}
 }
+_isStringEqual() {
+  [[ "$1" == "$2" ]]
+}
 
 installPackage() {
   local package
@@ -140,15 +143,19 @@ installPackageAUR() { \
   fi
 }
 
+readonly isForDesktop=$(chezmoi data | grep isitdesktop | cut -d: -f2 | sed -e 's/^\s"//' -e 's/",$//')
+
 builds() {
-  _echoIt "${_QDel}" "About to install ${_Qcy}special${_Qce} packages... " "${_Qiw}"
-  _yesConfirmOrSkip
-  if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    WMcustomBuildsAndRicing
-  else
-    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+  if _isStringEqual "${isForDesktop}" "yes" ; then
+    _echoIt "${_QDel}" "About to install ${_Qcy}special${_Qce} packages... " "${_Qiw}"
+    _yesConfirmOrSkip
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+      WMcustomBuildsAndRicing
+    else
+      _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+    fi
+    _echoDone
   fi
-  _echoDone
 }
 
 main() {
@@ -164,17 +171,19 @@ main() {
   else
     _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
   fi
-  _echoIt "${_QDel}" "About to install ${_Qcy}qdots WM${_Qce} packages... " "${_Qiw}"
-  _yesConfirmOrSkip
-  if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    for pkg in "${WMPackagesToInstall[@]}" ; do
-      installPackage "$pkg"
-    done
-    for pkg in "${WMpackagesToInstallAUR[@]}" ; do
-      installPackageAUR "$pkg"
-    done
-  else
-    _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+  if _isStringEqual "${isForDesktop}" "yes" ; then
+    _echoIt "${_QDel}" "About to install ${_Qcy}qdots WM${_Qce} packages... " "${_Qiw}"
+    _yesConfirmOrSkip
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+      for pkg in "${WMPackagesToInstall[@]}" ; do
+        installPackage "$pkg"
+      done
+      for pkg in "${WMpackagesToInstallAUR[@]}" ; do
+        installPackageAUR "$pkg"
+      done
+    else
+      _echoIt "${_QDel}" "... Skipped!" "${_Qic}"
+    fi
   fi
   _echoDone
 }
