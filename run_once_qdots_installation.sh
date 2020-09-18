@@ -22,7 +22,7 @@ readonly essentialPackagesToInstall=(
                                         #        need for: fzf, nvim alias (qdots)
   'wget'                                # [tool] simple tool to retrive files using
                                         #        HTTPS, HTTP, FTP, FTPS
-  'pulseaduio-alsa'                     # [tool] audio system
+  'pulseaudio-alsa'                     # [tool] audio system
   'pulsemixer'                          # [tool] audio controler in the terminal
   'pamixer'                             # [tool] CLI interface for audio controler
                                         #        used in status bar and scripts
