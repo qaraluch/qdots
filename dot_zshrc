@@ -1,0 +1,8 @@
+# This is workaroud for WSL2
+# It seems it runs non-login shell by default.
+# Qdots needs login shell in order to read .zproflie file,
+# so:
+if [[ ! -o login ]]; then
+  # I am in non-login shell, so do:
+  exec "${SHELL}" --login
+fi
