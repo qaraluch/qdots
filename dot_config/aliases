@@ -66,6 +66,7 @@ alias e='exit'
 # see: .config/functions/git-functions.sh
 alias g='git-g-alias'
 alias ga='git-add-status'
+alias gacm='git-add-commit-message'
 alias gd='git-diff'
 alias gds='git-diff --staged'
 alias gidiot='git-idiot'

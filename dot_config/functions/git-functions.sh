@@ -22,7 +22,9 @@ git-g-alias() {
 }
 
 git-add-status() { git add $* && git-status-log ; }
+git-add-commit-message() { git add $1 && git-commit-message $2 ; }
 git-commit-better() { git commit -v $* && git-status-log ; }
+git-commit-message() { git commit -vm $* && git-status-log ; }
 git-diff() { git diff $* -- . ':(exclude)package-lock.json' ':(exclude)yarn.lock' ; }
 git-idiot() { git add -A && git commit --amend --no-edit ; }
 git-push() { git push $* && git-status-log ; }
