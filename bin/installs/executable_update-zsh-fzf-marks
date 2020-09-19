@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# update script for:
+# zsh plugin
+# fzf-marks
+# Home URL: [urbainvaes/fzf-marks: Plugin to manage bookmarks in bash and zsh](https://github.com/urbainvaes/fzf-marks)
+# Warn: this is duplicate code from:
+# run_once_zsh_setup.sh
+# Author: qaraluch - 09.2020
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrSkip() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+}
+
+readonly zshcachedir="$HOME/.cache/zsh"
+readonly fzfmarks_plugName='fzf-marks'
+readonly fzfmarks_plugGitURL='https://github.com/urbainvaes/fzf-marks.git'
+readonly fzfmarks_plugCacheDirPath="${zshcachedir}/plugs/${fzfmarks_plugName}"
+readonly fzfmarks_plugCommandDownload=( git clone --depth 1 "${fzfmarks_plugGitURL}" "${fzfmarks_plugCacheDirPath}" )
+
+update-fzf-marks() {
+  _echoIt "$_QDel" "About to update ..."
+  _echoIt "$_QDel" "  ...  fzf plugin: '${_Qcy}${fzfmarks_plugName}${_Qce}'" "$_Qiw"
+  _yesConfirmOrSkip
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    rm -rfv "${fzfmarks_plugCacheDirPath}"
+    local execPlugCommand=$("${fzfmarks_plugCommandDownload[@]}")
+    _echoDone
+  else
+    _echoIt "... Skipped!" "${_ic}"
+  fi
+}
+
+update-fzf-marks
