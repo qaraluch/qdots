@@ -24,6 +24,8 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 # for bash
+# .config/nvim/ultisnips/sh.snippets
+
 snippet she "she bang bash" b
 #!/usr/bin/env bash
 # Author: qaraluch - ${1}.2020 - MIT
@@ -32,6 +34,14 @@ endsnippet
 
 snippet to "TODO" b
 # TODO: $0
+endsnippet
+
+snippet qd "qnnb date"
+`date +%Y-%m-%d_%H%M%S`$0
+endsnippet
+
+snippet dd "date"
+`date +%Y-%m-%d`$0
 endsnippet
 
 snippet if "if ... then (if)"

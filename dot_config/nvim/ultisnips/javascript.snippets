@@ -24,6 +24,8 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 # for js
+# .config/nvim/ultisnips/javascript.snippets
+
 snippet to "todo"
 //TODO: $0
 endsnippet
@@ -123,3 +125,15 @@ snippet expoc "Jest - expect.objectContaining()"
 expect.objectContaining({ $1 }),
 endsnippet
 
+snippet expac "Jest - expect.arrayContaining()"
+expect.arrayContaining({ $1 }),
+endsnippet
+
+snippet expa "Jest - expect.anything()"
+expect.anything()$0,
+endsnippet
+
+# React
+snippet cn "className"
+className="$0"
+endsnippet
