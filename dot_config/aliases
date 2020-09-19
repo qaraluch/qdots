@@ -16,6 +16,11 @@ alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
 alias rm='rm -Irf'
 
+# node.js an npm
+alias nt='npm test'
+alias ns='npm start'
+alias nrd='npm run dev'
+
 # Zsh-abbrev-alias'es
 # caveat: need space before (hard to use as a part of filename)
 # for -ge command need to be in \' quotes to work properly
