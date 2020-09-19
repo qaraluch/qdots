@@ -49,6 +49,7 @@ alias 9='cd -9'
 alias cd..='cd ..'
 alias cd...='cd-grandparent'
 alias cd....='cd-great-grandparent'
+alias cdd='cd ..'
 alias d='show-dirs'
 
 alias tre='tree-better'                             /functions/better-commands.sh
