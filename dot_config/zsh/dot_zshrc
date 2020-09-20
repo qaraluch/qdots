@@ -17,7 +17,6 @@ for file ($QDOTS_FUNCTIONS_DIR/*.{sh,zsh}) source $file
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-vimto ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-vimto/zsh-vimto.zsh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh
-[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
 [[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/zsh-abbrev-alias/abbrev-alias.plugin.zsh
 
 # Ricing
@@ -66,6 +65,12 @@ export FZF_MARKS_FILE=${QDOTS_ZSH_LOCALSHARE_DIR}/fzf-marks
 
 # Zshell options
 [ -f "$QDOTS_ZSH_CONF_DIR/.zshrc-options" ] && source "$QDOTS_ZSH_CONF_DIR/.zshrc-options"
+
+# Plugins: fzf-makrs
+# see: run_once_zsh_setup.sh
+# need to be after sourcing .zshrc-options
+# activation ZSH's completion system have to be done before sourcing the plugin
+[[ -d ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks ]] && source ${QDOTS_ZSH_CACHE_PLUGS_DIR}/fzf-marks/fzf-marks.plugin.zsh
 
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"
