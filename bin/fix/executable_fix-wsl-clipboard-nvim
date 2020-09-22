@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# fix-wsl-clipboard-nvim
+# Author: qaraluch - 01.2019 - MIT
+# Utility that setup neovim and windows clipboard on WSL and WSL2
+# see:  [FAQ · neovim/neovim Wiki](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
+# warn: need to install neovim on Windows beforehand by:
+# choco install neovim
+
+# Utils:
+readonly _pName=$(basename "$0")
+readonly _pDel="[ ${_pName} ]"
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+_yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  local msgDefaultAbort=${2:-'Abort script!'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+  echo >&2
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    _errorExit "${msgDefaultAbort}"
+  fi
+}
+
+readonly windowsNeovimPath="/mnt/c/tools/neovim/Neovim"
+
+readonly explaination=$(cat <<EOL
+  ${_cy}${_pName}${_ce}
+  is quick fix
+  for Arch Linux
+  to solve sharing cliboards between WSL and Windows 10
+  for neovim
+  this script will:
+  1. symlink win32yank.exe to the /usr/local/bin/
+  see: wsl2-linux.md
+  warn: need to install neovim on Windows beforehand by:
+  choco install neovim
+  and should be in the path:
+  ${_cy}${windowsNeovimPath}${_ce}
+EOL
+)
+
+performFix() {
+  sudo ln -sfv "${windowsNeovimPath}/bin/win32yank.exe" "/usr/local/bin/win32yank.exe"
+}
+
+main() {
+  echo "${explaination}"
+  _yesConfirmOrAbort
+  performFix
+  _echoDone
+}
+
+main
