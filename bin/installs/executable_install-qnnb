@@ -45,7 +45,7 @@ _msgInstalled() {
 
 # Vars
 readonly repoPath="https://github.com/qaraluch/qnnb.git"
-readonly destPath="${HOME}/qnnb"
+readonly destPath="${QDOTS_USER_QNNB_ROOT}"
 
 # Main
 readonly explaination=$(cat <<EOL

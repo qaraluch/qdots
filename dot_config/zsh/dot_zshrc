@@ -74,3 +74,15 @@ export FZF_MARKS_FILE=${QDOTS_ZSH_LOCALSHARE_DIR}/fzf-marks
 
 # Source aliases
 [ -f "$QDOTS_CONF_DIR/aliases" ] && source "$QDOTS_CONF_DIR/aliases"
+
+# Qnnb
+readonly qnnbSourcePath="${QDOTS_USER_QNNB_ROOT}/.sh/qnnb-source-this.sh"
+sourceQnnb() {
+  if [ -f "${qnnbSourcePath}" ]; then
+   source "${qnnbSourcePath}"
+  else
+    _echoIt 'Not found qnnb-source-this.sh script. Not installed? Try: install-qnnb' "${_pic}"
+    _echoIt ' ... or turn it off by commenting out qnnb section in the .zshrc ' "${_pic}"
+  fi
+}
+sourceQnnb
