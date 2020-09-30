@@ -34,6 +34,10 @@ source /usr/share/fzf/key-bindings.zsh
 export FZF_DEFAULT_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g ""'
 export FZF_CTRL_T_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g "" | sed -e "s:/[^/]*$::" | uniq'
 export FZF_ALT_C_OPTS="--preview ' tree -C {} | head -200'"
+export FZF_DEFAULT_OPTS='
+    --color fg:59,bg:236,hl:99,fg+:188,bg+:236,hl+:226
+    --color info:59,prompt:226,spinner:135,pointer:226,marker:118
+'
 
 # LS fix
 # no need for LS_COLORS
