@@ -939,3 +939,8 @@ let g:user_emmet_leader_key='<C-e>'
 inoremap <C-e>c <esc>:call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>wwi
 nnoremap <C-e>c :call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>ww
 
+"" tmux add pane from vim
+function! TmuxAdd()
+  exec ':!tmux-add'
+endfunction
+command! Ta call TmuxAdd()
