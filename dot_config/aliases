@@ -102,6 +102,7 @@ alias reload='zsh-reload'
 
 # see: ~/bin
 alias ta='tmux-add'
+alias ti='tmux-init'
 
 alias take='mkdir-and-cd'
 

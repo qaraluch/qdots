@@ -3,7 +3,8 @@
 
 # Tmux autostart
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux-init # see: ~/bin
+  # turn off auto tmux start
+  # exec tmux-init # see: ~/bin
 fi
 
 # Source qdots functions

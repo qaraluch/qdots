@@ -2,4 +2,5 @@
 # Author: qaraluch - 07.2020 - MIT
 # Init first session for tmux start
 
-tmux new-session -n shell
+# tmux new-session -n shell -c $HOME
+tmuxinator init
