@@ -26,6 +26,9 @@ readonly essentialPackagesToInstall=(
   'pulsemixer'                          # [tool] audio controler in the terminal
   'pamixer'                             # [tool] CLI interface for audio controler
                                         #        used in status bar and scripts
+  'zip'                                 # [tool] package and compress (archive) files
+  'unzip'                               # [tool] unpackage and uncompress archived files
+
   # extras
   'nodejs'                              # [dev] a bit of overkill but used
                                         #       for prettier in nvim
