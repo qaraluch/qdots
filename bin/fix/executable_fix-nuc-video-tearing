@@ -65,6 +65,7 @@ Section "Device"
     VendorName  "INTEL Corporation"
     Option "TripleBuffer" "true"
     Option "TearFree" "true"
+    Option "AccelMethod" "uxa"
 EndSection
 EOL
 )
