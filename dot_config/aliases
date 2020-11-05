@@ -94,6 +94,10 @@ alias llt='ls-long-time'
 alias lou='locate-update-db'
 alias lor='locate-remove-db'
 
+# load personal project's cli for:
+# ytd-mgmt
+alias load-ytd-mgmt='source ${QDOTS_USER_REPOS}/ytd-mgmt/.sh/ytd-mgmt-source-this.sh'
+
 alias nb='newsboat'
 
 alias mux='tmuxinator'
