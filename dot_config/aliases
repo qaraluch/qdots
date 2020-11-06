@@ -97,6 +97,8 @@ alias lor='locate-remove-db'
 # load personal project's cli for:
 # ytd-mgmt
 alias load-ytd-mgmt='source ${QDOTS_USER_REPOS}/ytd-mgmt/.sh/ytd-mgmt-source-this.sh'
+# f-mgmt
+alias load-f-mgmt='source ${QDOTS_USER_FMGMT}/.sh/f-mgmt2-source-this.sh'
 
 alias nb='newsboat'
 
