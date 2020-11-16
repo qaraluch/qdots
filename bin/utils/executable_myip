@@ -2,9 +2,6 @@
 # Author: qaraluch - 07.2020 - MIT
 # Check my public ip address by usage of dig
 # Check local machine ip address
-# Warn: dig is not installed by qdots yet
-# when missing install it:
-# sudo pacman -S bind-tools
 
 readonly _pName=$(basename $0)
 
@@ -47,9 +44,9 @@ parseOptions(){
 main() {
   local flag
   local publicFlag
-  # local positional=()
+  local positional=()
   parseOptions "$@"
-  # set -- "${positional[@]}"
+  set -- "${positional[@]}"
   if _isStringEqualY "${publicFlag}"; then
     getPublicIp
   else
@@ -67,8 +64,9 @@ getPublicIp() {
 }
 
 getLocalIp() {
-  hostname -i # on Arch
-  # hostname -I | awk '{print $2}' # on WSL ubuntu
+  ip addr show eth0 | awk '/inet / {gsub(/\/.*/,"",$2); print $2}'
+  # show with mask:
+  # ip addr show eth0 | awk '/inet / {print $2}'
 }
 
 main "$@"
