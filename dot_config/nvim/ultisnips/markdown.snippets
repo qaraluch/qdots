@@ -26,7 +26,7 @@
 # Markdown
 # .config/nvim/ultisnips/markdown.snippets
 
-snippet res "Resources:"
+snippet res "resources:"
 Resources:
 $0
 endsnippet
@@ -39,7 +39,7 @@ snippet se "see"
 see: $0
 endsnippet
 
-snippet ins "Install code"
+snippet ins "install code"
 Install:
 
 \`\`\`
@@ -69,25 +69,44 @@ snippet qtw "qnnb topic - WIP" b
 $0
 endsnippet
 
-snippet link "Link to something"
+snippet weblink "web link to something"
 [${1:${VISUAL:Text}}](${3:http://${2:www.url.com}})$0
 endsnippet
 
-snippet img "Image"
+snippet img "image"
 ![${1:pic alt}](${2:path}${3/.+/ "/}${3:opt title}${3/.+/"/})$0
 endsnippet
 
-snippet co "Codeblock" b
+snippet co "codeblock" b
 \`\`\`
 $1
 \`\`\`
 $0
 endsnippet
 
-snippet to "Todo"
+snippet cojs "codeblock js" b
+\`\`\`javascript
+$1
+\`\`\`
+$0
+endsnippet
+
+snippet to "todo"
 TODO: $0
 endsnippet
 
-snippet do "Todo - do"
+snippet do "todo - do"
 - [ ] $0
+endsnippet
+
+snippet qu "question"
+Q: $0
+endsnippet
+
+snippet sc "schortcut"
+- XXX - $0 - Shift+ Ctrl+ Alt+
+endsnippet
+
+snippet li "zk link"
+[[$1]]$0
 endsnippet
