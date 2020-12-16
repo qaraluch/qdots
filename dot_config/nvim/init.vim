@@ -944,3 +944,12 @@ function! TmuxAdd()
   exec ':!tmux-add'
 endfunction
 command! Ta call TmuxAdd()
+
+"" Test native nvim yank highlight
+" Test it when hit ver. 0.5.0"
+" https://www.reddit.com/r/neovim/comments/gofplz/neovim_has_added_the_ability_to_highlight_yanked/
+" in coc-settings - disabled highlight in coc-yank plugin
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=200 }
+augroup END
