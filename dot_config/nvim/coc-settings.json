@@ -10,6 +10,9 @@
   "snippets.extends": {
     "typescript": ["javascript"]
   },
+  // disable Python so error no occur
+  // see: https://stackoverflow.com/questions/63969277/does-coc-nvim-require-python
+  // "snippets.ultisnips.usePythonx": false,
   // coc-prettier
   // https://github.com/neoclide/coc-prettier
   "coc.preferences.formatOnSaveFiletypes": ["markdown", "javascript"],
