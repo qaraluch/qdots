@@ -729,11 +729,13 @@ endfunction
 "  like: print working directory (PWD)
 "  not use :cd, it changes working directory to $HOME
 
-"" Q: How to delete view and swap files?
+"" Q: How to delete view, swap and undo files?
 "  To remove view files, run command in the console:
 "     rm -rf ~/.local/share/nvim/view
 "  To remove swap files, run command in the console:
 "     rm -rf ~/.local/share/nvim/swap
+"  To remove undo files, run command in the console:
+"     rm -rf ~/.cache/vim/undo-dir/
 
 "" Q: How debug option set?
 "  To find what overriding option, use:
